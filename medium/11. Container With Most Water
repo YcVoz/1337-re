@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        int l = 0;
+        int r = height.size()-1;
+        int maxWater = 0;
+        for(int now_h=1;now_h<=10000 && l<r;now_h++){
+            while(l<height.size() && height[l]<now_h)
+                l++;
+            while(r>=0 && height[r]<now_h)
+                r--;
+            if(r<=l)
+                return maxWater;
+            maxWater = max(now_h*(r-l),maxWater);
+        }
+        return maxWater;
+    }
+};
