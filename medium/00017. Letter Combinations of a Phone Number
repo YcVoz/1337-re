@@ -1,0 +1,41 @@
+class Solution {
+public:
+    vector<string> letterCombinations(string digits) {
+        vector<string> ret(0);
+        if(digits.size()==0)
+            return ret;
+        ret.emplace_back("");
+        char startFrom;
+        int numberOfChar;
+        int size;
+        for(int i=0;i<digits.size();i++){
+            if(digits[i]=='7'){
+                startFrom = 'p';
+                numberOfChar = 4;
+            }
+            else if(digits[i]=='8'){
+                startFrom = 't';
+                numberOfChar = 3;
+            }
+            else if(digits[i]=='9'){
+                startFrom = 'w';
+                numberOfChar = 4;
+            }
+            else{
+                startFrom = 'a'+(digits[i]-'2')*3;
+                numberOfChar = 3;
+            }
+            size = ret.size();
+            ret.resize(size*numberOfChar);
+            for(int u = 1;u<numberOfChar;u++){
+                for(int o=0;o<size;o++){
+                    ret[u*size+o] = ret[o]+char(startFrom+u);
+                }
+            }
+            for(int u=0;u<size;u++){
+                ret[u] += char(startFrom);
+            }
+        }
+        return ret;
+    }
+};
