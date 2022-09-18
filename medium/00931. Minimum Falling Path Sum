@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int minFallingPathSum(vector<vector<int>>& matrix) {
+        int n = matrix.size();
+        int ret = 2146483647;
+        for(int i = 1;i<n;i++){
+            for(int u=0;u<n;u++){
+                int topMin = matrix[i-1][u];
+                if(u>0)
+                    topMin = min(topMin,matrix[i-1][u-1]);
+                if(u<n-1)
+                    topMin = min(topMin,matrix[i-1][u+1]);
+                matrix[i][u] += topMin;
+            } 
+        }
+        for(int u=0;u<n;u++)
+            ret = min(matrix[n-1][u],ret);
+        return ret;
+    }
+};
