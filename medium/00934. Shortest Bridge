@@ -1,0 +1,56 @@
+class Solution {
+public:
+    int shortestBridge(vector<vector<int>>& grid) {
+        int n = grid.size();
+        int kSize = 100;
+        vector<int> move{1,0,-1,0,1};
+        for(int i=0;i<n;i++){
+            for(int u=0;u<n;u++){
+                if(grid[i][u]){
+                    grid[i][u] = 2;
+                    queue<int> q1;
+                    queue<int> q2;
+                    q1.push(i+kSize*u);
+                    while(!q1.empty()){
+                        int x = q1.front()%kSize;
+                        int y = q1.front()/kSize;
+                        q1.pop();
+                        for(int o=0;o<4;o++){
+                            int x2 = x+move[o];
+                            int y2 = y+move[o+1];
+                            if(x2>=0 && x2<n && y2>=0 && y2<n){
+                                if(grid[x2][y2]==1){
+                                    grid[x2][y2] = 2;
+                                    q1.push(x2+kSize*y2);
+                                }
+                                else if(grid[x2][y2]==0){
+                                    grid[x2][y2] = -1;
+                                    q2.push(x2+kSize*y2);
+                                }
+                            }
+                        }
+                    }
+                    while(!q2.empty()){
+                        int x = q2.front()%kSize;
+                        int y = q2.front()/kSize;
+                        q2.pop();
+                        for(int o=0;o<4;o++){
+                            int x2 = x+move[o];
+                            int y2 = y+move[o+1];
+                            if(x2>=0 && x2<n && y2>=0 && y2<n){
+                                if(grid[x2][y2]==1){
+                                    return (grid[x][y])*-1;
+                                }
+                                else if(grid[x2][y2]==0){
+                                    grid[x2][y2] = grid[x][y]-1;
+                                    q2.push(x2+kSize*y2);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return 373;
+    }
+};
