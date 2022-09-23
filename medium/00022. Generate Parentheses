@@ -1,0 +1,16 @@
+class Solution {
+public:
+    vector<string> generateParenthesis(int n) {
+        vector<string> ret;
+        helper(ret,"", 0, n);
+        return ret;
+    }
+    void helper(vector<string>& ret,string s, int number_stack, int number_left){
+        if(number_stack==0 && number_left==0){
+            ret.emplace_back(s);
+            return;
+        }
+        if(number_stack)helper(ret, s+')', number_stack-1, number_left);
+        if(number_left)helper(ret, s+'(', number_stack+1, number_left-1);
+    }
+};
