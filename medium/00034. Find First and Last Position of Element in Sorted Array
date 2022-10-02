@@ -1,0 +1,42 @@
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int n = nums.size();
+        int l = 0;
+        int r = n-1;
+        vector<int> ret(2,-1);
+        int teml = binarySort(nums, l, r, target);
+        int temr = teml;
+        int retl = teml;
+        int retr = teml;
+        if(teml==-1)return ret;
+        while(teml>0){
+            teml = binarySort(nums, 0, teml-1, target);
+            retl = teml==-1?retl:teml;
+        }
+        while(temr!=n-1 && temr!=-1){
+            temr = binarySort(nums, temr+1, n-1, target);
+            retr = temr==-1?retr:temr;
+        }
+        ret[0] = retl==0&&nums[0]==target?0:retl;
+        ret[1] = retr==n-1&&nums[n-1]==target?n-1:retr;
+        return ret;
+    }
+    int binarySort(vector<int>& nums, int l, int r, int target){
+        if(l>r || l<0 || r>=nums.size())
+            return -1;
+        if(l==r)
+            return nums[l]==target?l:-1;
+        while(l+1!=r){
+            int mid = (l+r)/2;
+            if(nums[mid]>target)r = mid;
+            else if(nums[mid]<target)l = mid;
+            else return mid;
+        }
+        if(nums[l]==target)
+            return l;
+        if(nums[r]==target)
+            return r;
+        return -1;
+    }
+};
