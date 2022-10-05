@@ -1,0 +1,15 @@
+class Solution {
+public:
+    void rotate(vector<vector<int>>& matrix) {
+        int n = matrix.size();
+        for(int i=0;i<n/2;i++){
+            for(int u=0;u<n-2*i-1;u++){
+                int temp = matrix[i][i+u];
+                matrix[i][i+u] = matrix[n-1-i-u][i];
+                matrix[n-1-i-u][i] = matrix[n-1-i][n-1-i-u];
+                matrix[n-1-i][n-1-i-u] = matrix[i+u][n-1-i];
+                matrix[i+u][n-1-i] = temp;
+            }
+        }
+    }
+};
