@@ -1,0 +1,23 @@
+class Solution {
+public:
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<vector<int>> ret(0);
+        dfs(nums, ret, 0);
+        return ret;
+    }
+    void dfs(vector<int> now, vector<vector<int>>& ret, int index){
+        if(index==now.size()){
+            ret.emplace_back(now);
+            return;
+        }
+        for(int i=index;i<now.size();i++){
+            int temp = now[index];
+            now[index] = now[i];
+            now[i] = temp;
+            dfs(now, ret, index+1);
+            temp = now[index];
+            now[index] = now[i];
+            now[i] = temp;
+        }
+    }
+};
