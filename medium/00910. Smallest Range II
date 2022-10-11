@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int smallestRangeII(vector<int>& nums, int k) {
+        int n = nums.size();
+        if(n==1)
+            return 0;
+        sort(nums.begin(), nums.end());
+        int L_max;
+        int L_min = nums[0]+k;
+        int R_max = nums[n-1]-k;
+        int R_min;
+        int minnn = 2147483647;
+        int temp = 0;
+        int temp2 = 0;
+        for(int i=0;i<n-1;i++){
+            L_max = nums[i]+k;
+            R_min = nums[i+1]-k;
+            temp = max(abs(L_max-R_min), abs(L_max-L_min));
+            temp2 = max(abs(R_max-L_min), abs(R_max-R_min));
+            minnn = min(minnn, max(temp, temp2));
+        }
+        return min(minnn, nums[n-1]-nums[0]);
+    }
+};
