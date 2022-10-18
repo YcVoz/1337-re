@@ -1,0 +1,29 @@
+class Solution {
+public:
+    void setZeroes(vector<vector<int>>& matrix) {
+        int m = matrix.size();
+        int n = matrix[0].size();
+        bool tag = 1;
+        vector<bool> row(m,0);
+        vector<bool> col(n,0);
+        for(int i=0;i<m;i++){
+            tag = 1;
+            for(int u=0;u<n;u++){
+                if(!matrix[i][u]){
+                    col[u] = 1;
+                    
+                    tag = 0;
+                }
+            }
+            if(!tag){
+                for(int ui=0;ui<n;ui++)matrix[i][ui] = 0;  
+            }
+        }
+        for(int u=0;u<n;u++){
+            if(col[u]){
+                for(int i=0;i<m;i++)
+                    matrix[i][u] = 0;
+            }
+        }
+    }
+};
