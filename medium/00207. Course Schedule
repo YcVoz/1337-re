@@ -1,0 +1,34 @@
+class Solution {
+public:
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        int n = prerequisites.size();
+        vector<set<int>> whoNeedsMe(numCourses);
+        vector<set<int>> INeedsWho(numCourses);
+        vector<int> num_INeedsWho(numCourses, 0);
+        set<int> nowFree;
+        int finished = 0;
+        for(auto v:prerequisites){
+            INeedsWho[v[0]].insert(v[1]);
+            whoNeedsMe[v[1]].insert(v[0]);
+            num_INeedsWho[v[0]]++;
+        }
+        for(int i=0;i<numCourses;i++){
+            if(!num_INeedsWho[i])
+                nowFree.insert(i);
+        }
+        while(!nowFree.empty()){
+            for (auto &s : nowFree) {
+                finished++;
+                for (auto &s2 : whoNeedsMe[s]){
+                    INeedsWho[s2].erase(s);
+                    num_INeedsWho[s2]--;
+                    if(!num_INeedsWho[s2]){
+                        nowFree.insert(s2);
+                    }
+                }
+                nowFree.erase(s);
+            }
+        }
+        return numCourses==finished;
+    }
+};
