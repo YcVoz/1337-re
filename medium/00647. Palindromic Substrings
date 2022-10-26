@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int countSubstrings(string s) {
+        int n = s.size();
+        int ret = 0;
+        vector<vector<bool>> dp(n, vector<bool>(n, 0));
+        for(int i=0;i<n;i++)
+            dp[i][i] = 1;
+        for(int i=1;i<n;i++)
+            dp[i-1][i] = s[i-1]==s[i];
+        for(int length = 3;length<=n;length++)
+            for(int start = 0;start+length-1<n;start++)
+                dp[start][start+length-1] = dp[start+1][start+length-2]?s[start]==s[start+length-1]:0;
+        for(int start = 0;start<n;start++)
+            for(int end = start;end<n;end++)
+                ret += dp[start][end];
+        return ret;
+    }
+};
