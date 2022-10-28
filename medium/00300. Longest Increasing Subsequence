@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> v1(1, nums[0]);
+        for(int i=1;i<n;i++){
+            if(v1.back()<nums[i])v1.emplace_back(nums[i]);
+            else{
+                int l = 0;
+                int r = v1.size()-1;
+                while(l+1<r){
+                    int m = (l+r)/2;
+                    if(v1[m]>nums[i])r=m;
+                    else if(v1[m]<nums[i])l=m;
+                    else{
+                        l=m;
+                        r=-1;
+                    }
+                }
+                if(v1[l]<nums[i])v1[l+1] = nums[i];
+                else v1[l] = nums[i];
+            }
+        }
+        return v1.size();
+    }
+};
