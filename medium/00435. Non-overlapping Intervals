@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int eraseOverlapIntervals(vector<vector<int>>& intervals) {
+        int n = intervals.size();
+        int ret = 0;
+        int lastSecond = -50001;
+        sort(intervals.begin(), intervals.end());
+        for(auto v:intervals){
+            if(v[0]<lastSecond){
+                ret++;
+                lastSecond = min(lastSecond, v[1]);
+            }
+            else
+                lastSecond = v[1];
+        }
+        return ret;
+    }
+};
