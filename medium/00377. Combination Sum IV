@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int combinationSum4(vector<int>& nums, int target) {
+        vector<long long> v1(target+1, 0);
+        int n = nums.size();
+        sort(nums.begin(), nums.end());
+        for(int i=0;i<n && nums[i]<=target;i++)
+            v1[nums[i]] = 1;
+        for(int nowtarget=1;nowtarget<=target;nowtarget++){
+            for(int i=0;i<n && nums[i]<nowtarget;i++){
+                v1[nowtarget] += v1[nowtarget-nums[i]];
+                if(v1[nowtarget]>INT_MAX)
+                    i=n;
+            }
+        }
+        return v1[target];
+    }
+};
