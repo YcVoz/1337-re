@@ -1,0 +1,32 @@
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        int n = s.size();
+        int n_wordDict = wordDict.size();
+        vector<bool> v1(n,0);
+        for(int i=0;i<n;i++){
+            for(int u=0;u<n_wordDict;u++){
+                int n2 = wordDict[u].size();
+                cout<<"start"<<endl;
+                cout<<i<<endl;
+                cout<<wordDict[u].size()<<endl;
+                cout<<(i-int(wordDict[u].size()))<<endl;
+                cout<<(i-size_t(n2))<<endl;
+                if(isSame(s, i-n2+1, i, wordDict[u]) && ((i-n2<0)||v1[i-n2])){
+                    v1[i] = 1;
+                    u = n_wordDict;
+                }
+            }
+        }
+        return v1[n-1];
+    }
+    bool isSame(string s, int start, int end, string s2){
+        if(start<0)
+            return 0;
+        int n = s2.size();
+        for(int i=0;i<n;i++)
+            if(s[start+i]!=s2[i])
+                return 0;
+        return 1;
+    }
+};
