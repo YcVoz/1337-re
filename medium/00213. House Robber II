@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        int n = nums.size();
+        if(n==1)
+            return nums[0];
+        if(n==2)
+            return max(nums[0], nums[1]);
+        int temp = nums[0];
+        nums[0] = 0;
+        int ret = 0;
+        int nowget = 0;
+        int dnowget = nums[1];
+        int ddnowget = 0;
+        for(int i=2;i<n;i++){
+            nowget = max(nums[i]+ddnowget, dnowget);
+            ddnowget = dnowget;
+            dnowget = nowget;
+        }
+        ret = nowget;
+        nums[0] = temp;
+        nums[n-1] = 0;
+        nowget = 0;
+        dnowget = max(nums[0], nums[1]);
+        ddnowget = nums[0];
+        for(int i=2;i<n;i++){
+            nowget = max(nums[i]+ddnowget, dnowget);
+            ddnowget = dnowget;
+            dnowget = nowget;
+        }
+        return max(ret, nowget);
+    }
+};
