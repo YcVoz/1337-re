@@ -1,0 +1,27 @@
+class Solution {
+public:
+    unordered_map<int, int> father;
+    int findFather(int x){
+        return (father.find(x)==father.end())?father[x]=x:(father[x]==x?x:father[x]=findFather(father[x]));
+    }
+    void unionn(int a, int b){
+        father[b] = findFather(a);
+    }
+    int longestConsecutive(vector<int>& nums) {
+        int n = nums.size();
+        int ret = 0;
+        for(int i=0;i<n;i++){
+            father[nums[i]] = nums[i];
+            if(father.find(nums[i]-1)!=father.end()){
+                unionn(nums[i]-1, nums[i]);
+            }
+            if(father.find(nums[i]+1)!=father.end()){
+                unionn(nums[i], nums[i]+1);
+            }
+        }
+        for(int i=0;i<n;i++)
+            ret = max(ret, nums[i]-findFather(nums[i])+1);
+            
+        return ret;
+    }
+};
