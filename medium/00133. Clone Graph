@@ -1,0 +1,49 @@
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    vector<Node*> neighbors;
+    Node() {
+        val = 0;
+        neighbors = vector<Node*>();
+    }
+    Node(int _val) {
+        val = _val;
+        neighbors = vector<Node*>();
+    }
+    Node(int _val, vector<Node*> _neighbors) {
+        val = _val;
+        neighbors = _neighbors;
+    }
+};
+*/
+
+class Solution {
+public:
+    Node* cloneGraph(Node* node) {
+        if(!node)
+            return node;
+        vector<bool> check(101,0);
+        queue<Node*> q1;
+        map<int, Node*> m1;
+        check[node->val] = 1;
+        q1.push(node);
+        Node* ret = new Node(node->val);
+        m1[node->val] = ret;
+        while(!q1.empty()){
+            Node* tem = q1.front();
+            q1.pop();
+            for(int i=0;i<tem->neighbors.size();i++){
+                if(!check[tem->neighbors[i]->val]){
+                    check[tem->neighbors[i]->val] = 1;
+                    Node* tem2 = new Node(tem->neighbors[i]->val);
+                    m1[tem->neighbors[i]->val] = tem2;
+                    q1.push(tem->neighbors[i]);
+                }
+                m1[tem->val]->neighbors.push_back(m1[tem->neighbors[i]->val]);
+            }
+        }
+        return ret;
+    }
+};
