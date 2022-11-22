@@ -1,0 +1,60 @@
+class Solution {
+public:
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
+        int m = heights.size();
+        int n = heights[0].size();
+        vector<vector<int>> ret;
+        vector<vector<bool>> canGoPacific(m, vector<bool>(n,0));
+        vector<vector<bool>> canGoAtlantic(m, vector<bool>(n,0));
+        vector<int> direction = {1,0,-1,0,1};
+        queue<pair<int,int>> q1;
+        queue<pair<int,int>> q2;
+        for(int i=0;i<n;i++){
+            canGoPacific[0][i] = 1;
+            canGoAtlantic[m-1][i] = 1;
+            q1.push({0,i});
+            q2.push({m-1,i});
+        }
+        for(int i=0;i<m;i++){
+            canGoPacific[i][0] = 1;
+            canGoAtlantic[i][n-1] = 1;
+            q1.push({i,0});
+            q2.push({i,n-1});
+        }
+        while(!q1.empty()){
+            int x = q1.front().first;
+            int y = q1.front().second;
+            q1.pop();
+            for(int d = 0;d<4;d++){
+                int x2 = x+direction[d];
+                int y2 = y+direction[d+1];
+                if(x2>=0 && x2<m && y2>=0 && y2<n && !canGoPacific[x2][y2]){
+                    if(heights[x2][y2]>=heights[x][y]){
+                        canGoPacific[x2][y2] = 1;
+                        q1.push({x2,y2});
+                    }
+                }
+            }
+        }
+        while(!q2.empty()){
+            int x = q2.front().first;
+            int y = q2.front().second;
+            q2.pop();
+            for(int d = 0;d<4;d++){
+                int x2 = x+direction[d];
+                int y2 = y+direction[d+1];
+                if(x2>=0 && x2<m && y2>=0 && y2<n && !canGoAtlantic[x2][y2]){
+                    if(heights[x2][y2]>=heights[x][y]){
+                        canGoAtlantic[x2][y2] = 1;
+                        q2.push({x2,y2});
+                    }
+                }
+            }
+        }
+        for(int i=0;i<m;i++)
+            for(int j=0;j<n;j++)
+                if(canGoAtlantic[i][j] && canGoPacific[i][j])
+                    ret.push_back({i,j});
+        return ret;
+    }
+};
