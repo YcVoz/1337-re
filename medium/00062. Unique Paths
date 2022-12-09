@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int uniquePaths(int m, int n) {
+        if(m<n)return uniquePaths(n, m);
+        long long ret = 1;
+        m--;n--;
+        int a = m+n;
+        int b = 2;
+        for(int i = 0;i<n;i++){
+            ret *= a--;
+            if(b<=n && ret/b*b==ret){
+                ret /= b++;
+            }
+        }
+        return ret;
+    }
+};
