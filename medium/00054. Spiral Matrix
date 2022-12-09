@@ -1,0 +1,38 @@
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        int x = 0;
+        int y = 0;
+        int row = matrix.size();
+        int col = matrix[0].size();
+        int sizee = row*col;
+        int c = 0;
+        int nowDirection = 0;
+        bool tag = 1;
+        vector<int> ret(sizee, -373);
+        while(c<sizee){
+            if(tag){
+                ret[c++] = matrix[x][y];
+                matrix[x][y] = 373;
+            }
+            tag = 1;
+            if(nowDirection==0){
+                if(y+1<col && matrix[x][y+1]!=373)y++;
+                else nowDirection = 1,tag = 0;
+            }
+            else if(nowDirection==1){
+                if(x+1<row && matrix[x+1][y]!=373)x++;
+                else nowDirection = 2,tag = 0;
+            }
+            else if(nowDirection==2){
+                if(y>0 && matrix[x][y-1]!=373)y--;
+                else nowDirection = 3,tag = 0;
+            }
+            else{
+                if(x>0 && matrix[x-1][y]!=373)x--;
+                else nowDirection = 0,tag = 0;
+            }
+        }
+        return ret;
+    }
+};
