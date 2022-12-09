@@ -1,0 +1,33 @@
+class Solution {
+public:
+    bool isValidSudoku(vector<vector<char>>& board) {        
+        vector<vector<bool>> row(9, vector<bool>(9, 0));
+        vector<vector<bool>> col(9, vector<bool>(9, 0));
+        vector<vector<bool>> box(9, vector<bool>(9, 0));
+        for(int i=0;i<9;i++){
+            for(int j=0;j<9;j++){
+                if(board[i][j]=='.')continue;
+                int m = board[i][j]-'1';
+                int boxIndex = -1;
+                if(i<3){
+                    if(j<3)boxIndex = 0;
+                    else if(j>5)boxIndex = 1;
+                    else boxIndex = 2;
+                }
+                else if(i>5){
+                    if(j<3)boxIndex = 3;
+                    else if(j>5)boxIndex = 4;
+                    else boxIndex = 5;
+                }
+                else{
+                    if(j<3)boxIndex = 6;
+                    else if(j>5)boxIndex = 7;
+                    else boxIndex = 8;
+                }
+                if(row[i][m] || col[j][m] || box[boxIndex][m])return 0;
+                row[i][m] = col[j][m] = box[boxIndex][m] = 1;
+            }
+        }
+        return 1;        
+    }
+};
