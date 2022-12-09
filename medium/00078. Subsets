@@ -1,0 +1,15 @@
+class Solution {
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<vector<int>> ret(1, vector<int>(0));
+        for(int i:nums){
+            int sizee = ret.size();
+            for(int u=0;u<sizee;u++){
+                vector<int> tem = ret[u];
+                tem.push_back(i);
+                ret.push_back(tem);
+            }
+        }
+        return ret;
+    }
+};
