@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int calculate(string s) {
+        int ret = 0;
+        int temCharInt = 0;
+        int temInt = 1;
+        bool plus = 1;
+        bool times = 1;
+        for(char i :s){
+            if(i==' ')continue;
+            if(i-'0'>=0)temCharInt = temCharInt*10+int(i-'0'); 
+            else{
+                if(times)temInt*=temCharInt;
+                else temInt/=temCharInt;
+                if(i=='+' || i=='-'){
+                    if(plus)ret+=temInt;
+                    else ret-=temInt;
+                    temInt = 1;
+                    plus = i=='+';
+                    times = 1;
+                }
+                else times = i=='*';
+                temCharInt = 0;
+            }
+        }
+        if(times)temInt*=temCharInt;
+        else temInt/=temCharInt;
+        if(plus)ret+=temInt;
+        else ret-=temInt;
+        return ret;
+    }
+};
