@@ -1,0 +1,31 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    stack<TreeNode*> s1;
+    stack<TreeNode*> sp;
+    stack<TreeNode*> sq;
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        travel(root, p, q);
+        if(sp.size()>sq.size())while(sp.size()>sq.size())sp.pop();
+        else if(sp.size()<sq.size())while(sp.size()<sq.size())sq.pop();
+        while(sp.top()!=sq.top())sp.pop(),sq.pop();
+        return sp.top();
+    }
+    void travel(TreeNode* root, TreeNode* p, TreeNode* q){
+        if(root==NULL)return;
+        s1.push(root);
+        if(root == p)sp = s1;
+        else if(root == q)sq = s1;
+        travel(root->left, p, q);
+        travel(root->right, p, q);
+        s1.pop();
+    }
+};
