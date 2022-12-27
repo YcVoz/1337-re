@@ -1,0 +1,28 @@
+class Solution {
+public:
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        int n = prerequisites.size();
+        vector<vector<int>> someoneNeedMe(numCourses);
+        vector<vector<int>> iNeedSomeone(numCourses);
+        vector<int> iAmfree(0);
+        vector<int> numberINeed(numCourses, 0);
+        vector<int> ret(0);
+        for(int i=0;i<n;i++){
+            someoneNeedMe[prerequisites[i][1]].push_back(prerequisites[i][0]);
+            iNeedSomeone[prerequisites[i][0]].push_back(prerequisites[i][1]);
+            numberINeed[prerequisites[i][0]]++;
+        }
+        for(int i=0;i<numCourses;i++)
+            if(iNeedSomeone[i].empty())
+                iAmfree.push_back(i);
+        while(!iAmfree.empty()){
+            int thisCourse = iAmfree.back();
+            ret.push_back(thisCourse);
+            iAmfree.resize(iAmfree.size()-1);
+            for(int i=0;i<someoneNeedMe[thisCourse].size();i++)
+                if(!--numberINeed[someoneNeedMe[thisCourse][i]])
+                    iAmfree.push_back(someoneNeedMe[thisCourse][i]);
+        }
+        return ret.size()==numCourses?ret:vector<int> (0);
+    }
+};
