@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int countPrimes(int n) {
+        static int ret = 0;
+        static vector<bool> v1(5000001, 0);
+        static vector<int> retv(5000001, 0);
+        if(ret)return retv[n];
+        for(int i = 2; i<v1.size(); i++){
+            retv[i] = ret;
+            if(v1[i])continue;
+            ret++;
+            for(int u = 1;u*i<v1.size();u++)
+                v1[i*u] = 1;
+        }
+        return retv[n];
+    }
+};
