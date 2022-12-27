@@ -1,0 +1,29 @@
+class Solution {
+public:
+    string largestNumber(vector<int>& nums) {
+        int n = nums.size();
+        bool tag = 1;
+        string ret = "";
+        sort(nums.begin(), nums.end(), compare);
+        for(int i=0;i<n;i++){
+            if(nums[i]==0 && tag)continue;
+            tag = 0;
+            ret += to_string(nums[i]);
+        }
+        return ret==""?"0":ret;
+    }
+    static bool compare(int& a, int& b) {
+        if(a==0)return 0;
+        if(b==0)return 1;
+        long long aFirst, bFirst;
+        int tta = a;
+        int ttb = b;
+        int a_count = 0;
+        int b_count = 0;
+        while(tta)tta/=10, a_count++;
+        while(ttb)ttb/=10, b_count++;
+        aFirst = a*pow(10, b_count)+b;
+        bFirst = b*pow(10, a_count)+a;
+        return aFirst > bFirst; 
+    }
+};
