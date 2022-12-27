@@ -1,0 +1,33 @@
+class Trie {
+public:
+    unordered_set<string> s1;
+    unordered_set<string> s1_pre;
+    Trie() {
+        s1.clear();
+        s1_pre.clear();
+    }
+    
+    void insert(string word) {
+        s1.insert(word);
+        while(!word.empty()){
+            s1_pre.insert(word);
+            word.resize(word.size()-1);
+        }
+    }
+    
+    bool search(string word) {
+        return s1.find(word) != s1.end();
+    }
+    
+    bool startsWith(string prefix) {
+        return s1_pre.find(prefix) != s1_pre.end();
+    }
+};
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie* obj = new Trie();
+ * obj->insert(word);
+ * bool param_2 = obj->search(word);
+ * bool param_3 = obj->startsWith(prefix);
+ */
