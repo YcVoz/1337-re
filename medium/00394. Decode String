@@ -1,0 +1,42 @@
+class Solution {
+public:
+    string decodeString(string s) {
+        int nowReading = 0;
+        int num = 0;
+        string temString = "";
+        string ret = "";
+        stack<string> s1;
+        for(char c: s){
+            int d = c-'0';
+            if(c == '['){
+                s1.push(to_string(num)+"@");
+                num = 0;
+            }
+            else if(c == ']'){
+                while(s1.top().back()!='@'){
+                    temString = s1.top() + temString;
+                    s1.pop();
+                }
+                int multi = atoi(s1.top().c_str());
+                s1.pop();
+                string temString2 = temString;
+                for(int i=0;i<multi-1;i++)temString += temString2;
+                s1.push(temString);
+                temString = "";
+            }
+            else if(d>=0 && d<=9){
+                if(temString!=""){
+                    s1.push(temString);
+                    temString = "";
+                }
+                num = num*10 + d;
+            }
+            else temString += c;
+        }
+        while(!s1.empty()){
+            ret = s1.top()+ret;
+            s1.pop();
+        }
+        return ret+temString;
+    }
+};
