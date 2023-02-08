@@ -1,0 +1,49 @@
+class LRUCache {
+public:
+    int nowSize;
+    int maxSize;
+    map<int, int> count;
+    map<int, int> key2value;
+    queue<int> q1;
+    queue<int> e_q1;
+    LRUCache(int capacity) {
+        maxSize = capacity;
+        nowSize = 0;
+        count.clear();
+        key2value.clear();
+        q1 = e_q1;
+    }
+    
+    int get(int key) {
+        if(key2value.find(key)!=key2value.end()){
+            q1.push(key);
+            count[key]++;
+            return key2value[key];
+        }
+        return -1;
+    }
+    
+    void put(int key, int value) {
+        q1.push(key);
+        if(key2value.find(key)==key2value.end()){
+            nowSize++;
+            while(nowSize>maxSize){
+                count[q1.front()]--;
+                if(count[q1.front()]==0){
+                    nowSize--;
+                    key2value.erase(q1.front());
+                }
+                q1.pop();
+            }
+        }
+        key2value[key] = value;
+        count[key]++;
+    }
+};
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache* obj = new LRUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
