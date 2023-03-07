@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        int n = gas.size();
+        if(n==1)return gas[0]>=cost[0]?0:-1;
+        int accumulate = 0;
+        int maxx = 0;
+        int maxIndex = -1;
+        vector<int> ccost(n);
+        vector<int> cost2(0);
+        for(int i=0;i<n;i++){
+            ccost[i] = gas[i]-cost[i];
+            accumulate += ccost[i];
+        }
+        if(accumulate<0)return -1; 
+        int n2 = n*2-1;
+        int lastStart = -1;
+        cost2 = ccost;
+        ccost.insert(ccost.end(),cost2.begin(),cost2.end());
+        vector<int> dp(n2,0);
+        dp[0] = max(0, ccost[0]);
+        if(dp[0]==0)lastStart = 0;
+        if(maxx<dp[0]){
+            maxIndex = lastStart+1;
+            maxx = dp[0];
+        }
+        for(int i=1;i<n2;i++){
+            dp[i] = dp[i-1]+ccost[i];
+            dp[i] = max(dp[i], 0);
+            if(dp[i]==0)lastStart = i;
+            if(maxx<dp[i]){
+                maxIndex = lastStart+1;
+                maxx = dp[i];
+            }
+        }
+        return maxIndex>=n?maxIndex-n:maxIndex;
+    }
+};
