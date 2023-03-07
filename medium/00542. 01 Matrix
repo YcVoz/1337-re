@@ -1,0 +1,38 @@
+class Solution {
+public:
+    vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
+        int m = mat.size();
+        int n = mat[0].size();
+        int sizee;
+        int a, b;
+        int aa, bb;
+        vector<int> direction = {1, 0, -1, 0, 1};
+        vector<vector<int>> ret;
+        queue<int> q1;
+        for(int i=0;i<m;i++){
+            for(int u=0;u<n;u++){
+                if(mat[i][u])mat[i][u]=-1;
+                else q1.push(i*100000+u);
+            }
+        }
+        ret = mat;
+        sizee = q1.size();
+        while(sizee){
+            for(int i=0;i<sizee;i++){
+                a = q1.front()/100000;
+                b = q1.front()%100000;
+                q1.pop();
+                for(int d=0;d<4;d++){
+                    aa = a + direction[d];
+                    bb = b + direction[d+1];
+                    if(aa>=0 && aa<m && bb>=0 && bb<n && ret[aa][bb]==-1){
+                        ret[aa][bb] = ret[a][b]+1;
+                        q1.push(aa*100000+bb);
+                    }
+                }
+            }
+            sizee = q1.size();
+        }
+        return ret;
+    }
+};
