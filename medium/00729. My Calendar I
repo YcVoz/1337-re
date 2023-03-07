@@ -1,0 +1,72 @@
+class MyCalendar {
+public:
+    vector<int> start_v1;
+    vector<int> end_v1;
+    MyCalendar() {
+        start_v1.resize(0);
+        end_v1.resize(0);
+    }
+    
+    bool book(int start, int end) {
+        if(start_v1.size()==0){
+            start_v1.push_back(start);
+            end_v1.push_back(end);
+            return 1;
+        }
+        else if(start_v1.size()==1){
+            if(start<=start_v1[0]){
+                if(end<=start_v1[0]){
+                    start_v1.insert(start_v1.begin(), start);
+                    end_v1.insert(end_v1.begin(), end);
+                }
+                else return 0;
+            }
+            else{
+                if(end_v1.back()<=start){
+                    start_v1.push_back(start);
+                    end_v1.push_back(end);
+                }
+                else return 0;
+            }
+        }
+        else{
+            if(start<=start_v1[0]){
+                if(end<=start_v1[0]){
+                    start_v1.insert(start_v1.begin(), start);
+                    end_v1.insert(end_v1.begin(), end);
+                }
+                else return 0;
+            }
+            else if(start>=start_v1.back()){
+                if(end_v1.back()<=start){
+                    start_v1.push_back(start);
+                    end_v1.push_back(end);
+                }
+                else return 0;
+            }
+            else{
+                int l = 0;
+                int r = start_v1.size()-1;
+                int mid = (l+r)/2;
+                while(l+1!=r){
+                    if(start_v1[mid]==start)return 0;
+                    else if(start_v1[mid]>start)r = mid;
+                    else l = mid;
+                    mid = (l+r)/2;
+                }
+                if(end_v1[l]>start || start_v1[l+1]<end)return 0;
+                else{
+                    start_v1.insert(start_v1.begin()+l+1, start);
+                    end_v1.insert(end_v1.begin()+l+1, end);
+                }
+            }
+        }
+        return 1;
+    }
+};
+
+/**
+ * Your MyCalendar object will be instantiated and called as such:
+ * MyCalendar* obj = new MyCalendar();
+ * bool param_1 = obj->book(start,end);
+ */
