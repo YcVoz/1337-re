@@ -1,0 +1,60 @@
+class Solution {
+public:
+    struct dictionaryTree {
+        vector<bool> hasNode;
+        vector<dictionaryTree*> v;
+        dictionaryTree() : hasNode(vector<bool>(26, 0)), v(vector<dictionaryTree*>(26, nullptr)) {}
+    };
+    string replaceWords(vector<string>& dictionary, string sentence) {
+        int n = dictionary.size();
+        dictionaryTree* root = new dictionaryTree();
+        for(int i=0;i<n;i++){
+            dictionaryTree* tmp = root;
+            bool check = 1;
+            for(int cc = 0;cc<dictionary[i].size()-1;cc++){
+                char c = dictionary[i][cc];
+                if(tmp->hasNode[c-'a'] && tmp->v[c-'a']==nullptr){
+                    check = 0;
+                    break;
+                }
+                tmp->hasNode[c-'a'] = 1;
+                if(tmp->v[c-'a']==nullptr)tmp->v[c-'a'] = new dictionaryTree();
+                tmp = tmp->v[c-'a'];
+            }
+            if(check){
+                tmp->hasNode[dictionary[i].back()-'a'] = 1;
+                tmp->v[dictionary[i].back()-'a'] = nullptr;
+            }
+        }
+        int start = 0;
+        int end = sentence.find(" ");
+        vector<string> v_s(0);
+        while (end != -1) {
+            v_s.push_back(sentence.substr(start, end - start));
+            start = end + 1;
+            end = sentence.find(" ", start);
+        }
+        v_s.push_back(sentence.substr(start, end - start));
+        string ret = "";
+        for(int i=0;i<v_s.size();i++){
+            dictionaryTree* tmp = root;
+            string temString = "";
+            bool ckeck = 1;
+            for(char c: v_s[i]){
+                if(tmp->hasNode[c-'a']){
+                    temString += c;
+                    if(tmp->v[c-'a']==nullptr){
+                        ret += temString + " ";
+                        ckeck = 0;
+                        break;
+                    }
+                    tmp = tmp->v[c-'a'];
+                }
+                else break;
+            }
+            if(ckeck)ret += v_s[i] + " ";
+        }
+        ret.resize(ret.size()-1);
+        return ret;
+    }
+};
