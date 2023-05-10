@@ -1,0 +1,22 @@
+class Solution {
+public:
+    double largestSumOfAverages(vector<int>& nums, int k) {
+        int n = nums.size();
+        double ret = 0;
+        vector<int> summ(n, 0);
+        vector<vector<vector<double>>> dp(n, vector<vector<double>>(n, vector<double>(k+1, 0)));
+        summ[0] = nums[0];
+        for(int i=1;i<n;i++)summ[i] = summ[i-1]+nums[i];
+        for(int len=1;len<=n;len++){
+            for(int start=0;start+len-1<n;start++){
+                dp[start][start+len-1][1]=(start==0?(summ[start+len-1]):(summ[start+len-1]-summ[start-1]))/(len+0.0);
+                for(int temk=2;temk<=k && len>=temk;temk++){
+                    for(int startPart=start;startPart<start+len-1;startPart++){
+                        dp[start][start+len-1][temk] = max(dp[start][startPart][1]+dp[startPart+1][start+len-1][temk-1], dp[start][start+len-1][temk]);
+                    }                  
+                }
+            }
+        }
+        return dp[0][n-1][k];
+    }
+};
