@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int numFactoredBinaryTrees(vector<int>& arr) {
+        int n = arr.size();
+        long long ret = 0;
+        vector<long long> v1(n, 1);
+        map<int, int> m1;
+        sort(arr.begin(), arr.end());
+        for(int i=0;i<n;i++){
+            m1[arr[i]] = i;
+            for(int o=0;o<i;o++){
+                int needed = arr[i]/arr[o];
+                if(needed*arr[o]==arr[i] && m1.find(needed)!=m1.end()){
+                    v1[i] += v1[o]*v1[m1[needed]];
+                }
+            }
+            ret += v1[i];
+        }
+        ret %= 1000000007;
+        return ret;
+    }
+};
