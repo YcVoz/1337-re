@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int wiggleMaxLength(vector<int>& nums) {
+        int m = nums.size();
+        bool bigOrSmall = 0;
+        int startIndex = -1;
+        int ret = 1;
+        for(int i=1;i<m;i++){
+            if(nums[i]!=nums[0]){
+                bigOrSmall = nums[i]>nums[0];
+                startIndex = i;
+                i = m;
+                ret++;
+            }
+        }
+        if(startIndex==-1)return ret;
+        for(int i = startIndex+1;i<m;i++){
+            if(bigOrSmall){
+                if(nums[i]<nums[i-1]){
+                    bigOrSmall = 0;
+                    ret++;
+                }
+            }
+            else{
+                if(nums[i]>nums[i-1]){
+                    bigOrSmall = 1;
+                    ret++;
+                }
+            }
+        }
+        return ret;
+    }
+};
