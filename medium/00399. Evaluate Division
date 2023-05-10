@@ -1,0 +1,59 @@
+class Solution {
+public:
+    vector<int>father;
+    vector<double>ratioTofather;
+    int findFather(int x)
+    {
+        if(x == father[x])return x;
+        int temFather = father[x];
+        father[x] = findFather(father[x]);
+        ratioTofather[x] *= ratioTofather[temFather];
+        return father[x];
+    }
+    void Union(int x, int y, double value)
+    {
+        int xx = findFather(x);
+        int yy = findFather(y);
+        if (xx<yy){
+            father[yy] = xx;
+            ratioTofather[yy] = (ratioTofather[x])/(ratioTofather[y])/(value);
+        }
+        else{
+            father[xx] = yy;
+            ratioTofather[xx] = (ratioTofather[y])/(ratioTofather[x])*(value);
+        }
+    } 
+    vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries) {
+        int count = 0;
+        int n = values.size();
+        int n_queries = queries.size();
+        map<string, int>m1;
+        vector<double> ret(n_queries, -1);
+        for(int i=0;i<n;i++){
+            if(m1.find(equations[i][0])==m1.end()){
+                m1[equations[i][0]] = count++;
+            }
+            if(m1.find(equations[i][1])==m1.end()){
+                m1[equations[i][1]] = count++;
+            }
+        }
+        father.resize(count);
+        ratioTofather.resize(count);
+        for(int i=0;i<count;i++){
+            father[i] = i;
+            ratioTofather[i] = 1;
+        }
+        for(int i=0;i<n;i++){
+            Union(m1[equations[i][0]], m1[equations[i][1]], values[i]);
+        }
+        for(int i=0;i<count;i++){
+            findFather(i);
+        }
+        for(int i=0;i<n_queries;i++){
+            if(m1.find(queries[i][0])==m1.end() || m1.find(queries[i][1])==m1.end())continue;
+            if(findFather(m1[queries[i][0]])!=findFather(m1[queries[i][1]]))continue;
+            ret[i] = ratioTofather[m1[queries[i][0]]]/ratioTofather[m1[queries[i][1]]];
+        }
+        return ret;
+    }
+};
