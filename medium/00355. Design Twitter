@@ -1,0 +1,49 @@
+class Twitter {
+public:
+    map<int, set<int>> id2Follower;
+    map<int, set<pair<int, int>>> id2TimeAndpost;
+    int time = 0;
+    Twitter() {
+
+    }
+    
+    void postTweet(int userId, int tweetId) {
+        pair<int, int> tmp = {time++, tweetId};
+        id2TimeAndpost[userId].insert(tmp);
+    }
+    
+    vector<int> getNewsFeed(int userId) {
+        vector<int> ret(0);
+        priority_queue<pair<int, int>, vector<pair<int, int>>> pq;
+        for(auto iter:id2Follower[userId]){
+            for(auto iter2:id2TimeAndpost[iter]){
+                pq.push(iter2);
+            }
+        }
+        for(auto iter:id2TimeAndpost[userId]){
+            pq.push(iter);
+        }
+        for(int i=0;i<10&&!pq.empty();i++){
+            ret.push_back(pq.top().second);
+            pq.pop();
+        }
+        return ret;
+    }
+    
+    void follow(int followerId, int followeeId) {
+        id2Follower[followerId].insert(followeeId);
+    }
+    
+    void unfollow(int followerId, int followeeId) {
+        id2Follower[followerId].erase(followeeId);
+    }
+};
+
+/**
+ * Your Twitter object will be instantiated and called as such:
+ * Twitter* obj = new Twitter();
+ * obj->postTweet(userId,tweetId);
+ * vector<int> param_2 = obj->getNewsFeed(userId);
+ * obj->follow(followerId,followeeId);
+ * obj->unfollow(followerId,followeeId);
+ */
