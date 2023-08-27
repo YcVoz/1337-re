@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int lastStoneWeightII(vector<int>& stones) {
+        int sum = reduce(stones.begin(), stones.end());
+        bitset<3000> b1(0);
+        for(int e:stones){
+            b1 = (b1<<e)|b1;
+            b1[e-1]=1;
+        }
+        if(sum&1){
+            sum >>= 1;
+            for(int d = 0;d<sum;d++){
+                if(b1[sum-d-1])return (d<<1)+1;
+            }
+        } 
+        else{
+            sum >>= 1;
+            for(int d = 0;d<sum;d++){
+                if(b1[sum+d-1])return d<<1;
+            }
+        }
+        return stones[0];
+    }
+};
