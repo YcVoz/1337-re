@@ -1,0 +1,19 @@
+class Solution {
+public:
+    bool isRobotBounded(string instructions) {
+        int nowfacing = 0;
+        int x = 0;
+        int y = 0;
+        for(char c:instructions){
+            if(c=='L')nowfacing=(nowfacing+3)%4;
+            else if(c=='R')nowfacing=(nowfacing+1)%4;
+            else{
+                if(nowfacing==1)x++;
+                else if(nowfacing==2)y--;
+                else if(nowfacing==3)x--;
+                else y++;
+            }
+        }
+        return (x==0&&y==0)||nowfacing;
+    }
+};
