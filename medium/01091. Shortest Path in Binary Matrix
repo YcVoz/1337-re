@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
+        int n = grid.size();
+        if(grid[0][0] || grid[n-1][n-1])return -1;
+        if(n == 1)return 1;
+        priority_queue <int, vector<int>, function<bool(int &, int &)>> q1(cmp);
+        q1.push(10000);
+        grid[0][0] = 11;
+        while(!q1.empty()){
+            int x = q1.top()%10000/100;
+            int y = q1.top()%100;
+            int temx = x;
+            int temy = y;
+            int val = 0;
+            q1.pop();
+            for(int xdiff = -1;xdiff<=1;xdiff++){
+                for(int ydiff = -1;ydiff<=1;ydiff++){
+                    temx = x+xdiff;
+                    temy = y+ydiff;
+                    if(temx>=0 && temy>=0 && temx<n && temy<n && grid[temx][temy]%10==0){
+                        val = grid[x][y]/10+1;
+                        if(temx==n-1 && temy == n-1)return val;
+                        grid[temx][temy]+=val*10;
+                        grid[temx][temy]++;
+                        q1.push(val*10000+temx*100+temy);
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+    static bool cmp(int& a, int& b) {
+        return a/10000>b/10000;
+    }
+};
