@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int shipWithinDays(vector<int>& weights, int days) {
+        int weights_min = 0;
+        int weights_max = 25000001;
+        int n = weights.size();
+        while(weights_max-weights_min!=1){
+            int mid = (weights_max + weights_min)/2;
+            int remain = mid;
+            int tmpdays = 1;
+            for(int i=0;i<n;i++){
+                if(weights[i]>mid){
+                    weights_min = mid;
+                    tmpdays = days+1;
+                    i = n;
+                }
+                else if(remain<weights[i]){
+                    remain = mid;
+                    ++tmpdays;
+                    i--;
+                    if(tmpdays>days){
+                        weights_min = mid;
+                        i = n;
+                    }
+                }
+                else{
+                    remain -= weights[i];
+                }
+            }
+            if(tmpdays<=days){
+                weights_max = mid;
+            }
+        }
+        return weights_max;
+    }
+};
