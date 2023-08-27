@@ -1,0 +1,12 @@
+class Solution {
+public:
+    int twoCitySchedCost(vector<vector<int>>& costs) {
+        int n = costs.size();
+        int ret =  0;
+        vector<pair<int, int>> v1(n);
+        for(int i=0;i<n;i++)v1[i] = {costs[i][1]-costs[i][0], i};
+        sort(v1.begin(), v1.end());
+        for(int i=0;i<n/2;i++)ret += costs[v1[i].second][1] + costs[v1[n-i-1].second][0];
+        return ret;
+    }
+};
