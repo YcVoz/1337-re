@@ -1,0 +1,32 @@
+class Solution {
+public:
+    map<vector<char>, int> m1;
+    int numTilePossibilities(string tiles) {
+        int ret = 0;
+        vector<char> tiless(27, 0);
+        for(char c:tiles)tiless[c-'A']++;
+        for(int i=1;i<=tiles.size();i++){
+            tiless[26]++;
+            ret += helper(tiless);
+        }
+        return ret;
+    }
+    int helper(vector<char> tiles){
+        if(m1.find(tiles)!=m1.end())return m1[tiles];
+        int ret = 0;
+        if(tiles[26]==1){
+            for(int i=0;i<26;i++)if(tiles[i])ret++;
+            m1[tiles] = ret;
+            return ret;
+        }
+        tiles[26]--;
+        for(int i=0;i<26;i++){
+            if(tiles[i]==0)continue;
+            tiles[i]--;
+            ret += helper(tiles);
+            tiles[i]++;
+        }
+        m1[tiles] = ret;
+        return ret;
+    }
+};
