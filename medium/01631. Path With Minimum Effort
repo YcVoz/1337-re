@@ -1,0 +1,41 @@
+#define pii pair<int,int>
+class Solution {
+public:
+    int minimumEffortPath(vector<vector<int>>& heights) {
+        int m = heights.size();
+        int n = heights[0].size();
+        int noweffort;
+        int nowPosition_x;
+        int nowPosition_y;
+        int i;
+        int c_x, c_y;
+        int tmpEffort;
+        priority_queue <pii, vector<pii>, greater<pii>> pq;
+        vector<vector<bool>> check(m, vector<bool>(n, 0));
+        vector<vector<int>> effort(m, vector<int>(n, 1000000));
+        vector<int> diraction = {1, 0, -1, 0, 1};
+        effort[0][0] = 0;
+        pq.push({effort[0][0], 0});
+        while(!pq.empty() || !check[m-1][n-1]){
+            noweffort = pq.top().first;
+            nowPosition_x = pq.top().second/100;
+            nowPosition_y = pq.top().second%100;
+            pq.pop();
+            if(check[nowPosition_x][nowPosition_y])continue;
+            check[nowPosition_x][nowPosition_y] = 1;
+            for(i=0;i<4;i++){
+                c_x = nowPosition_x + diraction[i];
+                c_y = nowPosition_y + diraction[i+1];
+                if(c_x<0 || c_x>=m || c_y<0 || c_y>=n)continue;
+                if(check[c_x][c_y])continue;
+                tmpEffort = abs(heights[c_x][c_y]-heights[nowPosition_x][nowPosition_y]);
+                tmpEffort = max(tmpEffort,effort[nowPosition_x][nowPosition_y]);
+                if(tmpEffort < effort[c_x][c_y]){
+                    pq.push({tmpEffort, c_x*100+c_y});
+                    effort[c_x][c_y] = tmpEffort;
+                }
+            }
+        }
+        return effort[m-1][n-1];
+    }
+};
