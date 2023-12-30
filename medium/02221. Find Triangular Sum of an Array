@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int triangularSum(vector<int>& nums) {
+        int n = nums.size();
+        int tmp, tmp2, n2;
+        vector<int> ret(1, nums[0]);
+        for(int i=1;i<n;i++){
+            tmp = reduce(ret.begin(), ret.end())+nums[i];
+            ret.emplace_back(tmp%10);
+            for(int u = i-1;u>=0;u--){
+                tmp-=ret[u];
+                ret[u] = tmp%10;
+            }
+        }
+        return ret[n-1];
+    }
+};
