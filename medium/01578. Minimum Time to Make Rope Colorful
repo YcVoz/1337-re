@@ -1,0 +1,20 @@
+#define pii pair<int,char>
+class Solution {
+public:
+    int minCost(string colors, vector<int>& neededTime) {
+        int n = neededTime.size();
+        int totalSum = 0;
+        int tmpValue = 0;
+        priority_queue <pii> pq;
+        pii temp = {-1, -1};
+        for(int i=0;i<n;i++){
+            totalSum += neededTime[i];
+            temp = pq.empty()?temp:pq.top();
+            while(!pq.empty() && pq.top().second == colors[i])pq.pop();
+            if(pq.empty())pq.push({max(neededTime[i], temp.first), colors[i]});
+            else if(temp.second==colors[i])pq.push({max(temp.first, pq.top().first+neededTime[i]), colors[i]});
+            else pq.push({pq.top().first+neededTime[i], colors[i]});
+        }
+        return totalSum-pq.top().first;
+    }
+};
