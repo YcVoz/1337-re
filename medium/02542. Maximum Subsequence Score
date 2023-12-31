@@ -1,0 +1,29 @@
+#define pii pair<long long, long long>
+class Solution {
+public:
+    long long maxScore(vector<int>& nums1, vector<int>& nums2, int k) {
+        int n = nums1.size();
+        long long sum = 0;
+        long long nowMin = 100000;
+        long long ret = 0;
+        vector<pii> v1(n);
+        priority_queue<int, vector<int>, greater<int>> pq;
+        for (int i = 0; i < n; i++)
+            v1[i] = {nums2[i], nums1[i]};
+        sort(v1.begin(), v1.end(), greater<pii>());
+        for (int i=0; i<k; i++) {
+            sum += v1[i].second;
+            nowMin = min(v1[i].first, nowMin);
+            pq.push(v1[i].second);
+        }
+        for (int i=k; i<n; i++) {
+            ret = max(ret, sum*nowMin);
+            sum += v1[i].second;
+            nowMin = min(v1[i].first, nowMin);
+            pq.push(v1[i].second);
+            sum -= pq.top();
+            pq.pop();
+        }
+        return max(ret, sum*nowMin);
+    }
+};
