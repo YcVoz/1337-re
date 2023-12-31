@@ -1,0 +1,19 @@
+class Solution {
+public:
+    vector<int> rearrangeArray(vector<int>& nums) {
+        int positive_index = 0;
+        int negative_index = 1;
+        vector<int> ret(nums.size(), 0);
+        for(int i:nums){
+            if(i>0){
+                ret[positive_index] = i;
+                positive_index += 2;
+            }
+            else{
+                ret[negative_index] = i;
+                negative_index += 2;
+            }
+        }
+        return ret;
+    }
+};
