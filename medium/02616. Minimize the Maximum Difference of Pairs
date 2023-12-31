@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int minimizeMax(vector<int>& nums, int p) {
+        int n = nums.size();
+        int l = 0;
+        int r = 1000000000;
+        int m;
+        int p2 = p;
+        sort(nums.begin(), nums.end());    
+        for(int i=0;i<n-1 && p2>0;i++){
+            if(nums[i+1]-nums[i]<=0){
+                p2--;
+                i++;
+            }
+        }
+        if(p2==0)return 0;
+        while(l+1!=r){
+            m = (l+r)/2;
+            p2 = p;
+            for(int i=0;i<n-1 && p2>0;i++){
+                if(nums[i+1]-nums[i]<=m){
+                    p2--;
+                    i++;
+                }
+            }
+            if(p2==0)r = m;
+            else l = m;
+        }
+        return r;
+    }
+};
