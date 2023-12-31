@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int kConcatenationMaxSum(vector<int>& arr, int k) {
+        int n = arr.size();
+        int maxi = -10000;
+        long long ret = 0;
+        long long sum = 0;
+        long long tmpSum = 0;
+        long long fromLeftSum = 0;
+        long long fromRightSum = 0;
+        long long fromLeftRet = 0;
+        long long fromRightRet = 0;
+        for(int i:arr){
+            sum += i;
+            maxi = max(maxi, i);
+        }
+        if(maxi <= 0)return 0;
+        for(int i:arr){
+            if(i+tmpSum<=0)tmpSum = 0;
+            else ret = max(ret, tmpSum=tmpSum+i);
+        }
+        for(int i=0;i<n;i++){
+            fromLeftSum += arr[i];
+            fromRightSum += arr[n-1-i];
+            fromLeftRet = max(fromLeftRet, fromLeftSum);
+            fromRightRet = max(fromRightRet, fromRightSum);
+        }
+        return k>1?max((k-2)*sum+fromLeftRet+fromRightRet, max(ret, fromLeftRet+fromRightRet))%1000000007:ret;
+    }
+};
