@@ -1,0 +1,24 @@
+class Solution {
+public:
+    vector<int> father;
+    int findfater(int &x){
+        return father[x]==x?x:(father[x] = findfater(father[x]));
+    }
+    void merge(int &x, int &y){
+        x = findfater(x);
+        y = findfater(y);
+        if (x<y) father[y] = x;
+        else father[x] = y;
+    }
+    long long countPairs(int n, vector<vector<int>>& edges) {
+        long long ret = 0;
+        int edges_n = edges.size();
+        map<int, long long>m1;
+        father.resize(n);
+        for(int i=0;i<n;i++)father[i] = i;
+        for(int i=0;i<edges_n;i++)merge(edges[i][0], edges[i][1]);
+        for(int i=0;i<n;i++)m1[findfater(i)]++;
+        for(auto iter=m1.begin();iter!=m1.end();iter++)ret += (n-iter->second)*iter->second;
+        return ret/2;
+    }
+};
