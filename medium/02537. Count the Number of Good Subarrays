@@ -1,0 +1,22 @@
+class Solution {
+public:
+    long long countGood(vector<int>& nums, int k) {
+        int p1 = 0;
+        int n = nums.size();
+        long long ret = 0; 
+        long long nowPair = 0; 
+        map<int, int> m1;
+        m1[nums[p1]]++;
+        for(int p2=1;p2<n;p2++){
+            m1[nums[p2]]++;
+            nowPair += (m1[nums[p2]]-1);
+            while(nowPair>=k){
+                ret += n-p2;
+                m1[nums[p1]]--;
+                nowPair -= m1[nums[p1]];
+                p1++;
+            }
+        }
+        return ret;
+    }
+};
