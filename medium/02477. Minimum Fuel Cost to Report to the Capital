@@ -1,0 +1,26 @@
+class Solution {
+public:
+    long long minimumFuelCost(vector<vector<int>>& roads, int seats) {
+        int n = roads.size()+1;
+        vector<vector<int>> mapp(n, vector<int>(0));
+        for(auto path: roads){
+            mapp[path[0]].emplace_back(path[1]);
+            mapp[path[1]].emplace_back(path[0]);
+        }
+        return recur_function(mapp, seats, 0, -1).second;
+    }
+    pair<int, long long> recur_function(vector<vector<int>>& mapp, int seats, int nowNode, int parentNode){
+        int tmp_fuel;
+        pair<int, long long> tmp_pair;
+        pair<int, long long> ret = {1, 0};
+        for(int childNode: mapp[nowNode]){
+            if(childNode==parentNode)continue;
+            tmp_pair = recur_function(mapp, seats, childNode, nowNode);
+            ret.second += tmp_pair.second;
+            tmp_fuel = tmp_pair.first/seats;
+            ret.second += (tmp_fuel*seats==tmp_pair.first)?tmp_fuel:tmp_fuel+1;
+            ret.first += tmp_pair.first;
+        }
+        return ret;
+    }
+};
