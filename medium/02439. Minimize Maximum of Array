@@ -1,0 +1,31 @@
+#define pii pair<int,int>
+class Solution {
+public:
+    int minimizeArrayValue(vector<int>& nums) {
+        int n = nums.size();
+        int l = 0;
+        int r = 1000000000;
+        int m=0;
+        for(int i:nums){
+            m += i;
+            if(i!=0)break;
+        }
+        if(m==0)return 0;
+        while(l+1!=r){
+            m = (l+r)/2;
+            if(checkIfPass(nums, m, n))r = m;
+            else l = m;
+        }
+        return r;
+    }
+    bool checkIfPass(vector<int>& nums, int ans, int n){
+        long long tmp = 0;
+        for(int i=n-1;i>0;i--){
+            if(nums[i]+tmp>ans){
+                tmp = nums[i]+tmp-ans;
+            }
+            else tmp = 0;
+        }
+        return nums[0]+tmp<=ans;
+    }
+};
