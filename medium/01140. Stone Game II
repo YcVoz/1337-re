@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int stoneGameII(vector<int>& piles) {
+        int n = piles.size();
+        int tmp = 0;
+        vector<int> sum(n,0);
+        vector<vector<int>> dp(n, vector<int>(n+1, 0));
+        sum[n-1] = piles[n-1];
+        for(int i=n-2;i>=0;i--)sum[i] = sum[i+1] + piles[i];
+        for(int i=1;i<=n;i++)dp[n-1][i] = piles[n-1];
+        for(int i=n-2;i>=0;i--){
+            for(int m=1;m<=n;m++){
+                if(m*2>=n-i)dp[i][m] = sum[i];
+                else{
+                    for(int x = 1;x<=2*m && i+x<n;x++){
+                        tmp = min(n, max(m, x));
+                        dp[i][m] = max(dp[i][m], sum[i]-dp[i+x][tmp]);
+                    }
+                }
+            }
+        }
+        return dp[0][1];
+    }
+};
