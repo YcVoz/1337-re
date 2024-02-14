@@ -1,0 +1,19 @@
+class Solution {
+public:
+    long long maxScore(vector<int>& nums, int x) {
+        int n = nums.size();
+        vector<long long> maxScoreNow(2, -2000000000);
+        maxScoreNow[nums[0]&1] = nums[0];
+        for(int i=1;i<n;i++){
+            if(nums[i]&1){
+                maxScoreNow[1] += nums[i];
+                maxScoreNow[1] = max(maxScoreNow[1], maxScoreNow[0]+nums[i]-x);
+            }
+            else{
+                maxScoreNow[0] += nums[i];
+                maxScoreNow[0] = max(maxScoreNow[0], maxScoreNow[1]+nums[i]-x);
+            }
+        }
+        return max(maxScoreNow[0], maxScoreNow[1]);
+    }
+};
