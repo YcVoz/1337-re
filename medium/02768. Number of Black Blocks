@@ -1,0 +1,24 @@
+class Solution {
+public:
+    vector<long long> countBlackBlocks(int m, int n, vector<vector<int>>& coordinates) {
+        long long size = (long long)(m-1)*(long long)(n-1);
+        vector<long long> ret{size, 0, 0, 0, 0};
+        vector<int> direction = {-1, -1, 0, 0, -1};
+        map<pair<int, int>, int>  m1;
+        int x, y;
+        int newx, newy;
+        for(auto v1:coordinates){
+            x = v1[0];
+            y = v1[1];
+            for(int i=0;i<4;i++){
+                newx = x + direction[i];
+                newy = y + direction[i+1];
+                if(newx>=0 && newy>=0 && newx<m-1 && newy<n-1){
+                    ret[++m1[{newx, newy}]]++;
+                    ret[m1[{newx, newy}]-1]--;
+                }
+            }
+        }
+        return ret;
+    }
+};
