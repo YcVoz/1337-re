@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<vector<int>> restoreMatrix(vector<int>& rowSum, vector<int>& colSum) {
+        int m = rowSum.size();
+        int n = colSum.size();
+        int nowNeeded = 0;
+        int nowR = 0;
+        vector<vector<int>> ret(m, vector<int>(n, 0));
+        for(int c=0;c<n;c++){
+            nowNeeded = colSum[c];
+            while(nowNeeded){
+                if(rowSum[nowR]<nowNeeded){
+                    ret[nowR][c] = rowSum[nowR];
+                    nowNeeded -= rowSum[nowR];
+                    nowR++;
+                }
+                else{
+                    ret[nowR][c] = nowNeeded;
+                    rowSum[nowR] -= nowNeeded;
+                    nowNeeded = 0;
+                }
+            }
+        }
+        return ret;
+    }
+};
