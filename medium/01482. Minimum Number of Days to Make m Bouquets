@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int minDays(vector<int>& bloomDay, int m, int k) {
+        long long n = bloomDay.size();
+        long long a = m;
+        long long b = k;
+        if(n<a*b)return -1;
+        int l = -1;
+        int r = 1000000000;
+        int mid = (l+r)/2;
+        while(l+1!=r){
+            if(check(bloomDay, m, k, mid))r = mid;
+            else l = mid;
+            mid = (l+r)/2;
+        }
+        return r;
+    }
+    bool check(vector<int>& bloomDay, int m, int k, int day){
+        int contiDays = 0;
+        int b = 0;
+        for(int i:bloomDay){
+            if(i<=day)contiDays++;
+            else{
+                b += contiDays / k;
+                contiDays = 0;
+            }
+        }
+        b += contiDays / k;
+        return b>=m;
+    }
+};
