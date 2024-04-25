@@ -4,25 +4,20 @@ public:
         int n = matchsticks.size();
         int sum = accumulate(matchsticks.begin(), matchsticks.end(), 0);
         int maxCode = pow(2, n);
-        int maxOne = 0;
         vector<int> code_v(0);
         vector<bool> if_code_exist(maxCode, 0);
-        for(int i:matchsticks)maxOne = max(maxOne, i);
-        if(sum%4 || maxOne>sum/4)return false;
+        if(sum%4)return false;
         sum /= 4;
-        for(int code=1;code<maxCode;code++){
-            if(isCodePass(matchsticks, code, n, sum)){
+        for(int code=1;code<maxCode;code++)
+            if(isCodePass(matchsticks, code, n, sum))
                 code_v.emplace_back(code);
-                if_code_exist[code] = true;
-            }
-        }
         n = code_v.size();
-        if(n<4)return false;
         for(int i=0;i<n;i++){
             for(int j=i+1;j<n;j++){
-                if((code_v[i]|code_v[j])!=(code_v[i]+code_v[j]))continue;
-                for(int k=j+1;k<n;k++)
-                    if((code_v[i]|code_v[j]|code_v[k])==(code_v[i]+code_v[j]+code_v[k]) && if_code_exist[maxCode-1-code_v[i]-code_v[j]-code_v[k]])return true;
+                if((code_v[i]|code_v[j])==(code_v[i]+code_v[j])){
+                    if(if_code_exist[maxCode-1-(code_v[i]|code_v[j])])return true;
+                    if_code_exist[code_v[i]|code_v[j]] = true;
+                }           
             }
         }
         return false;
