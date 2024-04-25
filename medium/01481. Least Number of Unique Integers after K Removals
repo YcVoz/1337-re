@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int findLeastNumOfUniqueInts(vector<int>& arr, int k) {
+        int ret;
+        map<int, int> m1;
+        priority_queue <pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>> > pq;
+        for(int i : arr) m1[i]++;
+        for(auto iter=m1.begin();iter!=m1.end();iter++)pq.push({iter->second, iter->first});
+        ret = pq.size();
+        do{
+            auto now = pq.top();
+            pq.pop();
+            k -= now.first;
+            ret--;
+        }while (k>=0);
+        return ret+1;
+    }
+};
