@@ -1,0 +1,49 @@
+class Solution {
+public:
+    int maxEnvelopes(vector<vector<int>>& envelopes) {
+        int n = envelopes.size();
+        int ret = 0;
+        int w, h;
+        int l, r, m;
+        int next_start = n;
+        bool ret_add = 0;
+        vector<int> v1(n, INT_MAX);
+        queue<pair<int, int>> q1;
+        sort(envelopes.begin(), envelopes.end());
+        v1[0] = envelopes[0][1];
+        for(int i=1;i<n;i++){
+            if(envelopes[i][0]!=envelopes[0][0]){
+                next_start = i;
+                break;
+            }
+        }
+        for(int i=next_start;i<n;i++){
+            l=0;
+            r=ret;
+            w = envelopes[i][0];
+            h = envelopes[i][1];
+            if(h>v1[r]){
+                q1.push({r+1, h});
+                ret_add = 1;
+            }
+            else if(h<=v1[l])q1.push({l, h});
+            else{
+                while(r>l+1){
+                    m = (l+r)>>1;
+                    if(h>v1[m])l=m;
+                    else r=m;
+                }
+                q1.push({r, h});
+            }
+            if(i==n-1 || envelopes[i+1][0]!=w){
+                while(!q1.empty()){
+                    v1[q1.front().first] = min(v1[q1.front().first], q1.front().second);
+                    q1.pop();
+                }
+                if(ret_add)ret++;
+                ret_add = 0;
+            }
+        }
+        return ret+1;
+    }
+};
