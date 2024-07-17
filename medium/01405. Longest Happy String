@@ -1,0 +1,33 @@
+class Solution {
+public:
+    string longestDiverseString(int a, int b, int c) {
+        int lastWritten = -1;
+        char int2char;
+        vector<int> abc = {a, b, c};
+        string ret = "";
+        while(1){
+            switch(lastWritten){
+                case -1:lastWritten = getBiggest(abc);break;
+                case 0:lastWritten = abc[1]>=abc[2]?1:2;break;
+                case 1:lastWritten = abc[0]>=abc[2]?0:2;break;
+                case 2:lastWritten = abc[0]>=abc[1]?0:1;break;
+            }
+            int2char = 'a'+lastWritten;
+            if(abc[lastWritten]==0)return ret;
+            else if(abc[lastWritten]==1 || abc[lastWritten]<abc[getBiggest(abc)]){
+                ret += int2char;
+                abc[lastWritten]--;
+            }
+            else{
+                ret = ret + int2char + int2char;
+                abc[lastWritten] -= 2;
+            }
+        }
+        return ret;
+    }
+    int getBiggest(vector<int>& abc){
+        if(abc[0]>=abc[1] && abc[0]>= abc[2])return 0;
+        else if(abc[1]>=abc[0] && abc[1]>= abc[2])return 1;
+        else return 2;
+    }
+};
