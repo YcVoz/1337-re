@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int leastInterval(vector<char>& tasks, int n) {
+        int max_appear_count = 0;
+        int max_appear_letter_count = 0;
+        int c2i, ret;
+        vector<int> v1(26, 0);
+        for(char c:tasks){
+            c2i = c-'A';
+            v1[c2i]++;
+            if(v1[c2i]>max_appear_count){
+                max_appear_letter_count = 1;
+                max_appear_count = v1[c2i];
+            }
+            else if(v1[c2i]==max_appear_count)max_appear_letter_count++;
+        }
+        ret = (max_appear_count-1)*(n+1);
+        ret += (max_appear_letter_count-1<=n)?(max_appear_letter_count):1;
+        return max(int(tasks.size()), ret);
+    }
+};
