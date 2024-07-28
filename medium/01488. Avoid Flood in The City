@@ -1,0 +1,38 @@
+class Solution {
+public:
+    vector<int> avoidFlood(vector<int>& rains) {
+        int n = rains.size();
+        int l, r, m, tmp;
+        map<int, int> m1;
+        vector<int> forzero(0);
+        vector<int> ret(n, -1);
+        for(int i=0;i<n;i++){
+            if(rains[i]==0)forzero.emplace_back(i);
+            else{
+                if(m1.find(rains[i])!=m1.end()){
+                    if(forzero.size()==0)return vector<int>(0);
+                    tmp = m1[rains[i]];
+                    l = 0;
+                    r = forzero.size()-1;
+                    if(forzero[r]<tmp)return vector<int>(0);
+                    if(forzero[l]>tmp){
+                        ret[forzero[l]] = rains[i];
+                        forzero.erase(forzero.begin()+l);
+                    }
+                    else{
+                        while(l+1!=r){
+                            m = (l+r)>>1;
+                            if(forzero[m]>tmp)r=m;
+                            else l=m;
+                        }
+                        ret[forzero[r]] = rains[i];
+                        forzero.erase(forzero.begin()+r);
+                    }
+                }
+                m1[rains[i]] = i;
+            }
+        }
+        for(int i:forzero)ret[i] = 1;
+        return ret;
+    }
+};
