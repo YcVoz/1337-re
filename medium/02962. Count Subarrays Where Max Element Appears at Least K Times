@@ -1,0 +1,18 @@
+class Solution {
+public:
+    long long countSubarrays(vector<int>& nums, int k) {
+        int n = nums.size();
+        int maxNum = 1;
+        int nowk = 0;
+        int end = 0;
+        long long ret = 0;
+        for(int e:nums)maxNum=max(maxNum, e);
+        nowk=nums[0]==maxNum;
+        for(int start = 0;start<n;start++){
+            while(nowk<k && end<n-1)nowk+=nums[++end]==maxNum;
+            if(nowk>=k)ret+=n-end;
+            if(nums[start]==maxNum)nowk--;
+        }
+        return ret;
+    }
+};
