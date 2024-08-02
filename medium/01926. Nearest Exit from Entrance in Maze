@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int nearestExit(vector<vector<char>>& maze, vector<int>& entrance) {
+        int m = maze.size();
+        int n = maze[0].size();
+        int q1_size;
+        int x, y, xx, yy;
+        int ret = 1;
+        queue<pair<int, int>> q1;
+        vector<int> direction = {1, 0, -1, 0, 1};
+        q1.push({entrance[0], entrance[1]});
+        maze[entrance[0]][entrance[1]]='+';
+        while(!q1.empty()){
+            q1_size = q1.size();
+            for(int i=0;i<q1_size;i++){
+                x = q1.front().first;
+                y = q1.front().second;
+                q1.pop();
+                for(int d=0;d<4;d++){
+                    xx = x+direction[d];
+                    yy = y+direction[d+1];
+                    if(xx>=0 && yy>=0 && xx<m && yy<n && maze[xx][yy]=='.'){
+                        if(xx==0 || yy==0 || xx==m-1 || yy==n-1)return ret;
+                        q1.push({xx, yy});
+                        maze[xx][yy]='+';
+                    }
+                }
+            }
+            ret++;
+        }
+        return -1;
+    }
+};
