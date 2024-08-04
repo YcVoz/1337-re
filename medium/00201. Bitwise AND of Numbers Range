@@ -1,0 +1,10 @@
+class Solution {
+public:
+    int rangeBitwiseAnd(int left, int right) {
+        int b;
+        int xorr = (left^right);
+        for(b=31;b>=0;b--)if(xorr&(1<<b))break;
+        for(b=b;b>=0;b--)left&=(~(1<<b));
+        return left;
+    }
+};
