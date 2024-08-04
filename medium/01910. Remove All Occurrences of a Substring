@@ -1,0 +1,20 @@
+class Solution {
+public:
+    string removeOccurrences(string s, string part) {
+        int s_size = s.size();
+        int part_size = part.size();
+        int ret_size, check;
+        string ret = "";
+        for(char c:s){
+            if(c==part[part_size-1] && ret.size()>=part_size-1){
+                ret_size = ret.size();
+                check = 1;
+                for(int i=1;i<part_size&&check;i++)check = ret[ret_size-i]==part[part_size-i-1];
+                if(check)ret.resize(ret_size-part_size+1);
+                else ret+=c;
+            }
+            else ret+=c;
+        }
+        return ret;
+    }
+};
