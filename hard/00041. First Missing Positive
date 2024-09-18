@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int firstMissingPositive(vector<int>& nums) {
+        int n = nums.size();
+        int now_idx, now_value, tmp;
+        for(int i=0;i<n;i++){
+            now_idx = i;
+            now_value = nums[now_idx];
+            while(now_value!=now_idx+1 && now_value>0 && now_value<n+1){
+                tmp = now_value;
+                now_idx = now_value-1;
+                now_value = nums[now_idx];
+                nums[now_idx] = tmp;
+            }
+        }
+        for(int i=0;i<n;i++)if(nums[i]!=i+1)return i+1;
+        return n+1;
+    }
+};
