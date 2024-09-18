@@ -15,28 +15,22 @@ public:
             switch(next_direction){
                 case 0:
                 now_c++;
-                now_step_length--;
                 break;
                 case 1:
                 now_r ++;
-                now_step_length--;
                 break;
                 case 2:
                 now_c --;
-                now_step_length--;
                 break;
                 case 3:
                 now_r --;
-                now_step_length--;
                 break;
-                default:
-                return ret;
             }
             if(now_r>=0 && now_c>=0 && now_r<rows && now_c<cols){
                 ret[count][0] = now_r;
                 ret[count++][1] = now_c;
             }
-            if(now_step_length==0){
+            if(--now_step_length==0){
                 total_step_length+=next_direction&1;
                 now_step_length = total_step_length;
                 next_direction += 1;
