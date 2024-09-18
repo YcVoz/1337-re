@@ -1,0 +1,29 @@
+class Solution {
+public:
+    vector<vector<int>> getAncestors(int n, vector<vector<int>>& edges) {
+        int now_check_node;
+        vector<vector<int>> come_to_me(n);
+        vector<vector<int>> go_from_me(n);
+        vector<set<int>> ret_set(n);
+        vector<vector<int>> ret(n);
+        vector<int> number_of_come_to_me(n, 0);
+        queue<int> q1;
+        for(auto edge:edges){
+            come_to_me[edge[1]].emplace_back(edge[0]);
+            go_from_me[edge[0]].emplace_back(edge[1]);
+            number_of_come_to_me[edge[1]]++;
+        }
+        for(int i=0;i<n;i++)if(number_of_come_to_me[i]==0)q1.push(i);
+        while(!q1.empty()){
+            now_check_node = q1.front();
+            q1.pop();
+            for(int next_node:go_from_me[now_check_node]){
+                ret_set[next_node].insert(now_check_node);
+                for(auto child: ret_set[now_check_node])ret_set[next_node].insert(child);
+                if(--number_of_come_to_me[next_node]==0)q1.push(next_node);
+            }
+        }
+        for(int i=0;i<n;i++)ret[i].assign(ret_set[i].begin(), ret_set[i].end());
+        return ret;
+    }
+};
