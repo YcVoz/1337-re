@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int equalSubstring(string s, string t, int maxCost) {
+        int n = s.size();
+        int ret = 0;
+        int end = 0;
+        int now_diff = abs(s[0]-t[0]);
+        vector<int> diff(n, 25);
+        for(int i=0;i<n;i++)diff[i] = abs(s[i]-t[i]);
+        for(int start=0;start<n;start++){
+            while(now_diff<=maxCost && end<n-1)now_diff+=diff[++end];
+            if(now_diff>maxCost)ret = max(ret, end-start);
+            else return max(ret, end-start+1);
+            now_diff-=diff[start];
+        }
+        return ret;
+    }
+};
