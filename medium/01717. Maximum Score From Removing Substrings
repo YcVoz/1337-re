@@ -1,0 +1,46 @@
+class Solution {
+public:
+    int maximumGain(string s, int x, int y) {
+        int ret = 0;
+        int a_count = 0;
+        int b_count = 0;
+        int high_score = max(x, y);
+        int low_score = min(x, y);
+        char first_c = 'a';
+        char second_c = 'b';
+        stack<int> s1;
+        if(y>x){
+            first_c = 'b';
+            second_c = 'a';
+        }
+        for(char c:s){
+            if(c!=first_c && c!=second_c){
+                while(!s1.empty()){
+                    if(s1.top()==first_c)a_count++;
+                    else b_count++;
+                    s1.pop();
+                }
+                ret += min(a_count, b_count)*low_score;
+                a_count = 0;
+                b_count = 0;
+            }
+            else{
+                if(c==first_c)s1.push(c);
+                else {
+                    if(!s1.empty()&&s1.top()==first_c){
+                        s1.pop();
+                        ret += high_score;
+                    }
+                    else s1.push(c);
+                }
+            }
+        }
+        while(!s1.empty()){
+            if(s1.top()==first_c)a_count++;
+            else b_count++;
+            s1.pop();
+        }
+        ret += min(a_count, b_count)*low_score;
+        return ret;
+    }
+};
