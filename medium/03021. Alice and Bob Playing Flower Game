@@ -1,0 +1,11 @@
+class Solution {
+public:
+    long long flowerGame(int n, int m) {
+        long long ret = 0;
+        long long nn = n;
+        long long mm = m;
+        ret += (nn&1?nn/2+1:nn/2)*(mm/2);
+        ret += (mm&1?mm/2+1:mm/2)*(nn/2);
+        return ret;
+    }
+};
