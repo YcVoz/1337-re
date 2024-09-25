@@ -1,0 +1,15 @@
+class Solution {
+public:
+    long long minimumSteps(string s) {
+        long long ret = 0;
+        int n = s.size();
+        int now_distance = n-1;
+        for(int i=0;i<n;i++){
+            if(s[i]=='1'){
+                ret += now_distance-i;
+                now_distance--;
+            }
+        }
+        return ret;
+    }
+};
