@@ -1,0 +1,57 @@
+class Solution {
+public:
+    int largestMagicSquare(vector<vector<int>>& grid) {
+        int m = grid.size();
+        int n = grid[0].size();
+        int r2, c2, sum, sum2, tag;
+        int ret = 1;
+        vector<vector<int>> v_sum_left2right(m, vector<int>(n, 0));
+        vector<vector<int>> v_sum_top2bot(m, vector<int>(n, 0));
+        vector<vector<int>> v_sum_lt2rb(m, vector<int>(n, 0));
+        vector<vector<int>> v_sum_rt2lb(m, vector<int>(n, 0));
+        v_sum_left2right[0][0] = v_sum_top2bot[0][0] = v_sum_lt2rb[0][0] = v_sum_rt2lb[0][0] = grid[0][0];
+        for(int i=1;i<n;i++){
+            v_sum_left2right[0][i] = v_sum_left2right[0][i-1] + grid[0][i];
+            v_sum_top2bot[0][i] = grid[0][i];
+            v_sum_lt2rb[0][i] = grid[0][i];
+            v_sum_rt2lb[0][i] = grid[0][i];
+        }
+        for(int i=1;i<m;i++){
+            v_sum_left2right[i][0] = grid[i][0];
+            v_sum_top2bot[i][0] = v_sum_top2bot[i-1][0] + grid[i][0];
+            v_sum_lt2rb[i][0] = grid[i][0];
+        }
+        for(int i=1;i<m;i++)v_sum_rt2lb[i][n-1] = grid[i][n-1];
+        for(int i=1;i<m;i++){
+            for(int u=1;u<n;u++){
+                v_sum_left2right[i][u] = v_sum_left2right[i][u-1] + grid[i][u];
+                v_sum_top2bot[i][u] = v_sum_top2bot[i-1][u] + grid[i][u];
+                v_sum_lt2rb[i][u] = v_sum_lt2rb[i-1][u-1] + grid[i][u];
+            }
+        }
+        for(int i=1;i<m;i++)for(int u=0;u<n-1;u++)v_sum_rt2lb[i][u] = v_sum_rt2lb[i-1][u+1] + grid[i][u];
+        for(int r=0;r<m;r++){
+            for(int c=0;c<n;c++){
+                for(int size=1;r+size<=m && c+size<=n;size++){
+                    tag = 0;
+                    r2 = r+size-1;
+                    c2 = c+size-1;
+                    sum = r>0&&c>0?v_sum_lt2rb[r2][c2]-v_sum_lt2rb[r-1][c-1]:v_sum_lt2rb[r2][c2];
+                    sum2 = r>0&&c2<n-1?v_sum_rt2lb[r2][c]-v_sum_rt2lb[r-1][c2+1]:v_sum_rt2lb[r2][c];
+                    if(sum!=sum2)continue;
+                    for(int i=0;i<size;i++){
+                        sum2 = r>0?v_sum_top2bot[r2][c2-i]-v_sum_top2bot[r-1][c2-i]:v_sum_top2bot[r2][c2-i];
+                        if(sum!=sum2){tag = 1;break;}
+                    }
+                    if(tag)continue;
+                    for(int i=0;i<size;i++){
+                        sum2 = c>0?v_sum_left2right[r2-i][c2]-v_sum_left2right[r2-i][c-1]:v_sum_left2right[r2-i][c2];
+                        if(sum!=sum2){tag = 1;break;}
+                    }
+                    if(!tag)ret = max(ret, size);
+                }
+            }
+        }
+        return ret;
+    }
+};
