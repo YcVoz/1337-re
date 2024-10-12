@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int maxSumMinProduct(vector<int>& nums) {
+        int n = nums.size();
+        long long ret = 0;
+        stack<pair<int, int>> s0;
+        vector<long long> sum_v(n, 0);
+        vector<int> left_most_index(n);
+        vector<int> right_most_index(n);
+        sum_v[0] = nums[0];
+        s0.push({nums[0], 0});
+        for(int i=1;i<n;i++){
+            sum_v[i] = sum_v[i-1]+nums[i];
+            while(!s0.empty() && s0.top().first>nums[i]){
+                right_most_index[s0.top().second] = i-1;
+                s0.pop();
+            }
+            s0.push({nums[i], i});
+        }
+        while(!s0.empty()){
+            right_most_index[s0.top().second] = n-1;
+            s0.pop();
+        }
+        for(int i=n-1;i>=0;i--){
+            while(!s0.empty() && s0.top().first>nums[i]){
+                left_most_index[s0.top().second] = i+1;
+                s0.pop();
+            }
+            s0.push({nums[i], i});
+        }
+        while(!s0.empty()){
+            left_most_index[s0.top().second] = 0;
+            s0.pop();
+        }
+        for(int i=0;i<n;i++)ret = left_most_index[i]?max(ret, (sum_v[right_most_index[i]]-sum_v[left_most_index[i]-1])*nums[i]):max(ret, sum_v[right_most_index[i]]*nums[i]);
+        return ret%1000000007;
+    }
+};
