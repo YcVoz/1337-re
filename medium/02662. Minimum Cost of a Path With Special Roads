@@ -1,0 +1,59 @@
+class Solution {
+public:
+    int minimumCost(vector<int>& start, vector<int>& target, vector<vector<int>>& specialRoads) {
+        map<int, pair<int, int>> nodeID;
+        map<pair<int, int>, int> nodeIDD;
+        map<int, vector<int>> idcango;
+        set<int> IDneed2check;
+        set<int> checked;
+        priority_queue <pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>> > pq;
+        map<pair<int, int>,int> diswith2node;
+        int id = 0;
+        int dis = 0;
+        int dis2;
+        pair<int, int> a, b;
+        nodeID[-2] = {start[0], start[1]};
+        nodeID[373373] = {target[0], target[1]};
+        nodeIDD[{start[0], start[1]}] = -2;
+        nodeIDD[{target[0], target[1]}] = 373373;
+        IDneed2check.insert(373373);
+        checked.insert(-2);
+        for(auto v:specialRoads){
+            a = {v[0], v[1]};
+            b = {v[2], v[3]};
+            if(nodeIDD.find(a)==nodeIDD.end()){
+                nodeID[id] = a;
+                nodeIDD[a] = id++;
+            }
+            if(nodeIDD.find(b)==nodeIDD.end()){
+                nodeID[id] = b;
+                nodeIDD[b] = id++;
+            }
+            IDneed2check.insert(nodeIDD[a]);
+            diswith2node[{nodeIDD[a],nodeIDD[b]}] = (diswith2node.find({nodeIDD[a],nodeIDD[b]})==diswith2node.end())?v[4]:min(diswith2node[{nodeIDD[a],nodeIDD[b]}], v[4]);
+            idcango[nodeIDD[a]].push_back(nodeIDD[b]);
+        }
+        id = -2;
+        while(true){
+            for(int id0:IDneed2check){
+                if(checked.find(id0)!=checked.end())continue;
+                dis2 = abs(nodeID[id].first-nodeID[id0].first)+abs(nodeID[id].second-nodeID[id0].second);
+                pq.push({dis+dis2, id0});
+            }
+            for(int id0:idcango[id]){
+                if(checked.find(id0)!=checked.end())continue;
+                dis2 = diswith2node[{id, id0}];
+                pq.push({dis+dis2, id0});
+            }
+            do{
+                dis = pq.top().first;
+                id = pq.top().second;
+                pq.pop();
+            }while(checked.find(id)!=checked.end());
+            if(id==373373)return dis;
+            IDneed2check.erase(id);
+            checked.insert(id);
+        }
+        return -1;
+    }
+};
