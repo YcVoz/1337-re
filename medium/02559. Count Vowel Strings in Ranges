@@ -1,0 +1,19 @@
+class Solution {
+public:
+    vector<int> vowelStrings(vector<string>& words, vector<vector<int>>& queries) {
+        int n = words.size();
+        int m = queries.size();
+        vector<int> dp(n, 0);
+        vector<int> ret(m, 0);
+        set<char> s0;
+        s0.insert('a');
+        s0.insert('e');
+        s0.insert('i');
+        s0.insert('o');
+        s0.insert('u');
+        if(s0.find(words[0][0])!=s0.end()&&s0.find(words[0].back())!=s0.end())dp[0] = 1;
+        for(int i=1;i<n;i++)dp[i] = dp[i-1]+(s0.find(words[i][0])!=s0.end()&&s0.find(words[i].back())!=s0.end());
+        for(int i=0;i<m;i++)ret[i] = queries[i][0]>0?dp[queries[i][1]]-dp[queries[i][0]-1]:dp[queries[i][1]];
+        return ret;
+    }
+};
