@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int minOperations(vector<int>& nums, int x) {
+        int ret = -1;
+        int sum = 0;
+        int ptr2 = 0;
+        int n = nums.size();
+        int tmpsum = nums[0];
+        for(int i:nums)sum+=i;
+        if(sum==x)return n;
+        sum -= x;
+        for(int ptr = 0;ptr<n;ptr++){
+            while(tmpsum<sum && ptr2<n-1)tmpsum += nums[++ptr2];
+            if(tmpsum==sum)ret = max(ret, ptr2-ptr+1);
+            tmpsum -= nums[ptr];
+        }
+        return ret==-1?-1:n-ret;
+    }
+};
