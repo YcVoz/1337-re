@@ -1,0 +1,60 @@
+class Solution {
+public:
+    int regionsBySlashes(vector<string>& grid) {
+        int n = grid.size();
+        int node_count = n*n*4;
+        int sqar_count = n*n;
+        int next_n = 0;
+        int ret = 0;
+        vector<bool> visited(node_count, 0);
+        vector<vector<int>> nodeCanGo(node_count, vector<int>(0));
+        queue<int> q0;
+        for(int i=0;i<n;i++){
+            for(int u=0;u<n;u++){
+                if(grid[i][u]=='/'){
+                    nodeCanGo[next_n*4].push_back(next_n*4+3);
+                    nodeCanGo[next_n*4+1].push_back(next_n*4+2);
+                    nodeCanGo[next_n*4+2].push_back(next_n*4+1);
+                    nodeCanGo[next_n*4+3].push_back(next_n*4);
+                }
+                else if(grid[i][u]=='\\'){
+                    nodeCanGo[next_n*4].push_back(next_n*4+1);
+                    nodeCanGo[next_n*4+1].push_back(next_n*4);
+                    nodeCanGo[next_n*4+2].push_back(next_n*4+3);
+                    nodeCanGo[next_n*4+3].push_back(next_n*4+2);
+                }
+                else{
+                    nodeCanGo[next_n*4].push_back(next_n*4+3);
+                    nodeCanGo[next_n*4+1].push_back(next_n*4+2);
+                    nodeCanGo[next_n*4+2].push_back(next_n*4+1);
+                    nodeCanGo[next_n*4+3].push_back(next_n*4);
+                    nodeCanGo[next_n*4].push_back(next_n*4+1);
+                    nodeCanGo[next_n*4+1].push_back(next_n*4);
+                    nodeCanGo[next_n*4+2].push_back(next_n*4+3);
+                    nodeCanGo[next_n*4+3].push_back(next_n*4+2);
+                }
+                if(next_n-n>=0)nodeCanGo[next_n*4].push_back((next_n-n)*4+2);
+                if(next_n+1<sqar_count && (next_n+1)%n!=0)nodeCanGo[next_n*4+1].push_back((next_n+1)*4+3);
+                if(next_n+n<sqar_count)nodeCanGo[next_n*4+2].push_back((next_n+n)*4);
+                if(next_n-1>=0 && next_n%n!=0)nodeCanGo[next_n*4+3].push_back((next_n-1)*4+1);
+                next_n++;
+            }
+        }
+        for(int i=0;i<node_count;i++){
+            if(visited[i])continue;
+            ret++;
+            visited[i] = true;
+            q0.push(i);
+            while(!q0.empty()){
+                next_n = q0.front();
+                q0.pop();
+                for(int next_ii:nodeCanGo[next_n]){
+                    if(visited[next_ii])continue;
+                    visited[next_ii] = true;
+                    q0.push(next_ii);
+                }
+            }
+        }
+        return ret;
+    }
+};
