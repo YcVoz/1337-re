@@ -1,0 +1,40 @@
+class Solution {
+public:
+    int findTheCity(int n, vector<vector<int>>& edges, int distanceThreshold) {
+        int tmp_i, tmp_d, tmp_dd, tmp_count, ret;
+        int mincount = n;
+        vector<vector<pair<int, int>>> v0(n, vector<pair<int, int>>(0));
+        for(auto edge:edges){
+            v0[edge[0]].push_back({edge[1], edge[2]});
+            v0[edge[1]].push_back({edge[0], edge[2]});
+        }
+        for(int i=0;i<n;i++){
+            tmp_count = 0;
+            queue<pair<int, int>> q0;
+            unordered_set<int> s0;
+            vector<int> visited(n, distanceThreshold+1);
+            q0.push({i, 0});
+            visited[i] = 0;
+            s0.insert(i);
+            while(!q0.empty()){
+                tmp_i = q0.front().first;
+                tmp_d = q0.front().second;
+                tmp_count++;
+                s0.insert(tmp_i);
+                q0.pop();
+                for(auto neighbor:v0[tmp_i]){
+                    tmp_dd = tmp_d+neighbor.second;
+                    if(visited[neighbor.first]>tmp_dd && distanceThreshold>=tmp_dd){
+                        q0.push({neighbor.first, tmp_dd});
+                        visited[neighbor.first] = tmp_dd;
+                    }
+                }
+            }
+            if(mincount>=s0.size()){
+                mincount = s0.size();
+                ret = i;
+            }
+        }
+        return ret;
+    }
+};
