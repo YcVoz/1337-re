@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int maxDistance(vector<vector<int>>& arrays) {
+        int n = arrays.size();
+        int max_val = -99999;
+        int min_val = 99999;
+        int max_val2 = -99999;
+        int min_val2 = 99999;
+        int max_count = 0;
+        int min_count = 0;
+        int max_i = 0;
+        int min_i = 0;
+        for(int i=0;i<n;i++){
+            if(arrays[i][0]<min_val){
+                min_val = arrays[i][0];
+                min_count = 1;
+                min_i = i;
+            }
+            else if(arrays[i][0]==max_val)min_count=2;
+            if(arrays[i].back()>max_val){
+                max_val = arrays[i].back();
+                max_count = 1;
+                max_i = i;
+            }
+            else if(arrays[i].back()==max_val)max_count=2;
+        }
+        if(max_count>1 || min_count>1 || max_i!=min_i)return max_val-min_val;
+        arrays.erase(arrays.begin()+max_i);
+        for(auto a:arrays){
+            max_val2 = max(max_val2, a.back());
+            min_val2 = min(min_val2, a[0]);
+        }
+        return max(max_val2-min_val, max_val-min_val2);
+    }
+};
