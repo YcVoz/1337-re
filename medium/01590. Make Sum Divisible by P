@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int minSubarray(vector<int>& nums, int p) {
+        int n = nums.size();
+        long long diff, tmp_diff;
+        long long ret = 2147483647;
+        long long sum = 0;
+        long long tmp_sum = 0;
+        unordered_map<long long, long long> m0;
+        for(int i:nums)sum += i;
+        diff = sum%p;
+        if(diff==0)return 0;
+        m0[0] = -1;
+        for(int i=0;i<n;i++){
+            tmp_sum += nums[i];
+            tmp_diff = tmp_sum%p;
+            if(m0.find((tmp_diff-diff+p)%p)!=m0.end())ret = min(ret, i-m0[(tmp_diff-diff+p)%p]);
+            m0[tmp_diff] = i;
+        }
+        return ret>=n?-1:ret;
+    }
+};
