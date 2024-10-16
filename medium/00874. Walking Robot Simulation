@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int robotSim(vector<int>& commands, vector<vector<int>>& obstacles) {
+        long long x = 0;
+        long long y = 0;
+        int face = 0;
+        int ret = 0;
+        unordered_set<long long> s0;
+        for(auto obstacle:obstacles)s0.insert((long long)(obstacle[0]+30000)*100000+obstacle[1]+30000);
+        for(int command:commands){
+            if(command == -1)face = (face+1)%4;
+            else if(command == -2)face = (face+3)%4;
+            else{
+                for(int _=0;_<command;_++){
+                    if(face==1){
+                        if(s0.find((x+30001)*100000+y+30000)!=s0.end())break;
+                        else x++;
+                    }
+                    else if(face==2){
+                        if(s0.find((x+30000)*100000+y+29999)!=s0.end())break;
+                        else y--;
+                    }
+                    else if(face==3){
+                        if(s0.find((x+29999)*100000+y+30000)!=s0.end())break;
+                        else x--;
+                    }
+                    else{
+                        if(s0.find((x+30000)*100000+y+30001)!=s0.end())break;
+                        else y++;
+                    }
+                }
+                ret = max(ret, (int)(pow(x, 2)+pow(y, 2)));
+            }
+        }
+        return ret;
+    }
+};
