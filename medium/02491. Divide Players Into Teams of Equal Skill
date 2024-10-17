@@ -1,0 +1,25 @@
+class Solution {
+public:
+    long long dividePlayers(vector<int>& skill) {
+        int n = skill.size();
+        int count = 0;
+        int tmp = 0;
+        int total_skill = 0;
+        long long sum = 0;
+        vector<int> v(1001);
+        for(int i:skill)total_skill += i;
+        if(total_skill%(n/2))return -1;
+        total_skill /= (n/2);
+        for(int i:skill){
+            tmp = total_skill-i;
+            if(tmp<1)return -1;
+            if(!v[tmp])v[i]++;
+            else{
+                sum += (tmp)*i;
+                v[tmp]--;
+                count++;
+            }
+        }
+        return count==(n/2)?sum:-1;
+    }
+};
