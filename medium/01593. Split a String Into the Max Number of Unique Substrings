@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int maxUniqueSplit(string s) {
+        int ret = 0;
+        unordered_set<string> s0;
+        maxUniqueSplit2(s, s0, 0, ret, 0);
+        return ret;
+    }
+    void maxUniqueSplit2(string& s, unordered_set<string>& s0, int tmpans, int& ret, int start){
+        string tmp;
+        if(start>=s.size()){
+            ret = max(ret, tmpans);
+            return;
+        }
+        for(int i=start;i<s.size();i++){
+            tmp = s.substr(start, i-start+1);
+            if(s0.find(tmp)==s0.end()){
+                s0.insert(tmp);
+                maxUniqueSplit2(s, s0, tmpans+1, ret, i+1);
+                s0.erase(tmp);
+            }
+        }
+    }
+};
