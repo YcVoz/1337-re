@@ -1,0 +1,27 @@
+class Solution {
+public:
+    string reverseParentheses(string s) {
+        vector<string> v(2000, "");
+        int now_idx = 0;
+        for(char c:s){
+            if(c=='(')now_idx++;
+            else if(c==')'){
+                reverse(v[now_idx]);
+                v[now_idx-1] += v[now_idx];
+                v[now_idx] = "";
+                now_idx--;
+            }
+            else v[now_idx] += c;
+        }
+        return v[0];
+    }
+    void reverse(string& s){
+        int n = s.size();
+        int n2 = n/2;
+        for(int i=0;i<n2;i++){
+            s[i]^=s[n-1-i];
+            s[n-1-i]^=s[i];
+            s[i]^=s[n-1-i];
+        }
+    }
+};
