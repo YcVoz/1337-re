@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int candy(vector<int>& ratings) {
+        int n = ratings.size();
+        int ret = 0;
+        vector<pair<int, int>> v1(n);
+        vector<int> v_candy(n, 1);
+        for(int i=0;i<n;i++)v1[i] = {ratings[i], i};
+        sort(v1.begin(), v1.end());
+        for(int i=0;i<n;i++){
+            if(v1[i].second!=0 && ratings[v1[i].second-1]<v1[i].first)
+                v_candy[v1[i].second] = max(v_candy[v1[i].second], v_candy[v1[i].second-1]+1);
+            if(v1[i].second!=n-1 && ratings[v1[i].second+1]<v1[i].first)
+                v_candy[v1[i].second] = max(v_candy[v1[i].second], v_candy[v1[i].second+1]+1);
+            ret += v_candy[v1[i].second];
+        }
+        return ret;
+    }
+};
+int up=0;
+int down=0;
+while(i!=n){
+    up=0;
+    down=0;
+    if(){
+        ans+=++up;
+    }
+    if(){
+        ans+=++down;
+    }
+    ans-=min(up,down);
+}
