@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int minimumOperationsToMakeEqual(int x, int y) {
+        int tmp = -1;
+        int tmp_size = 0;
+        int ret = 0;
+        set<int> checked;
+        queue<int> q1;
+        if(x<=y)return y-x;
+        q1.push(x);
+        checked.insert(x);
+        while(true){
+            tmp_size = q1.size();
+            for(int i=0;i<tmp_size;i++){
+                tmp = q1.front();
+                q1.pop();
+                if(!checked.contains(tmp+1)){
+                    if(tmp+1==y)return ret+1;
+                    q1.push(tmp+1);
+                    checked.insert(tmp+1);
+                }
+                if(!checked.contains(tmp-1) && tmp-1>0){
+                    if(tmp-1==y)return ret+1;
+                    q1.push(tmp-1);
+                    checked.insert(tmp-1);
+                }
+                if(!checked.contains(tmp/5) && tmp%5==0){
+                    if(tmp/5==y)return ret+1;
+                    q1.push(tmp/5);
+                    checked.insert(tmp/5);
+                }
+                if(!checked.contains(tmp/11) && tmp%11==0){
+                    if(tmp/11==y)return ret+1;
+                    q1.push(tmp/11);
+                    checked.insert(tmp/11);
+                }
+            }
+            ret++;
+        }
+        return 373;
+    }
+};
