@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int n = height.size();
+        int l = 0;
+        int r = n-1;
+        int ret = 0;
+        int tmp_height;
+        if(n<=2)return ret;
+        while(l+1<r){
+            if(height[l]<=height[r]){
+                tmp_height = height[l];
+                while(height[++l]<tmp_height)ret += tmp_height-height[l];
+            }
+            else{
+                tmp_height = height[r];
+                while(height[--r]<tmp_height)ret += tmp_height-height[r];
+            }
+        }
+        return ret;
+    }
+};
