@@ -17,16 +17,3 @@ public:
         return ret;
     }
 };
-int up=0;
-int down=0;
-while(i!=n){
-    up=0;
-    down=0;
-    if(){
-        ans+=++up;
-    }
-    if(){
-        ans+=++down;
-    }
-    ans-=min(up,down);
-}
