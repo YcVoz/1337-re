@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int mincostTickets(vector<int>& days, vector<int>& costs) {
+        int n = days.size();
+        int l=0,r7=0,r30=0;
+        vector<int> dp(n, INT_MAX);
+        vector<vector<int>> index_x_days_after(n, vector<int>(2, -1));
+        if(costs[1]>costs[2])costs[1] = costs[2];
+        if(costs[0]>costs[1])costs[0] = costs[1];
+        for(int i=0;i<n;i++){
+            while(r7<n && days[r7]<=days[i]+6)r7++;
+            while(r30<n && days[r30]<=days[i]+29)r30++;
+            index_x_days_after[i][0] = r7;
+            index_x_days_after[i][1] = r30;
+        }
+        dp[n-1] = costs[0];
+        for(int i=n-2;i>=0;i--){
+            dp[i] = costs[0] + dp[i+1];
+            if(index_x_days_after[i][0]<n)
+                dp[i] = min(dp[i], dp[index_x_days_after[i][0]] + costs[1]);
+            else
+                dp[i] = min(dp[i], costs[1]);
+            if(index_x_days_after[i][1]<n)
+                dp[i] = min(dp[i], dp[index_x_days_after[i][1]] + costs[2]);
+            else
+                dp[i] = min(dp[i], costs[2]);
+        }
+        return dp[0];
+    }
+};
