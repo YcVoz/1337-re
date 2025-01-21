@@ -1,0 +1,16 @@
+class Solution {
+public:
+    long long gridGame(vector<vector<int>>& grid) {
+        int n = grid[0].size();
+        long long patha=0, pathb=0, ret = INT_MAX;
+        for(int i:grid[0])patha+=i;
+        patha-=grid[0][0];
+        ret = patha;
+        for(int i=1;i<n;i++){
+            pathb+=grid[1][i-1];
+            patha-=grid[0][i];
+            ret = min(ret, max(patha, pathb));
+        }
+        return ret;
+    }
+};
