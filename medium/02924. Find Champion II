@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int findChampion(int n, vector<vector<int>>& edges) {
+        int ret = -1;
+        vector<bool> nodegotoi(n, 0);
+        for(vector<int> &e: edges)nodegotoi[e[1]]=1;
+        for(int i=0;i<n;i++){
+            if(!nodegotoi[i]){
+                if(ret^-1)return -1;
+                ret = i;
+            }
+        }
+        return ret;
+    }
+};
