@@ -1,0 +1,10 @@
+class Solution {
+public:
+    int minimumLength(string s) {
+        int ret = s.size();
+        vector<int> c_num(26, 0);
+        for(char &c: s)c_num[c-'a']++;
+        for(int &i: c_num)ret -= max(0, (i&1)?i-1:i-2);
+        return ret;
+    }
+};
