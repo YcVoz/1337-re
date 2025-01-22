@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int firstCompleteIndex(vector<int>& arr, vector<vector<int>>& mat) {
+        int n = mat.size();
+        int m = mat[0].size();
+        int ret = 0;
+        vector<int> r_iam(m*n+1, -1);
+        vector<int> c_iam(m*n+1, -1);
+        vector<int> r_count(n, m);
+        vector<int> c_count(m, n);
+        for(int r=0;r<n;r++){
+            for(int c=0;c<m;c++){
+                r_iam[mat[r][c]] = r;
+                c_iam[mat[r][c]] = c;
+            }
+        }
+        for(int &i: arr){
+            if(!--r_count[r_iam[i]])return ret;
+            if(!--c_count[c_iam[i]])return ret;
+            ret++;
+        }
+        return ret;
+    }
+};
