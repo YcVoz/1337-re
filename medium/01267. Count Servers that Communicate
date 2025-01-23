@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int countServers(vector<vector<int>>& grid) {
+        int ret = 0;
+        int n = grid.size(), m=grid[0].size();
+        vector<int> hasserver_r(n, 0);
+        vector<int> hasserver_c(m, 0);
+        for(int i=0;i<n;i++){
+            for(int u=0;u<m;u++){
+                if(grid[i][u]){
+                    hasserver_r[i]++;
+                    hasserver_c[u]++;
+                }
+            }
+        }
+         for(int i=0;i<n;i++){
+            for(int u=0;u<m;u++){
+                if(grid[i][u]){
+                    if(hasserver_r[i]>1 || hasserver_c[u]>1)ret++;
+                }
+            }
+        }
+        return ret;
+    }
+};
