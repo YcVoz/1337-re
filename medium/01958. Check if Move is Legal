@@ -1,0 +1,27 @@
+class Solution {
+public:
+    bool checkMove(vector<vector<char>>& board, int rMove, int cMove, char color) {
+        int nextr, nextc;
+        int step;
+        vector<vector<int>> d(2, vector<int>(5));
+        d[0] = {1, 0, -1, 0, 1};
+        d[1] = {1, -1, -1, 1, 1};
+        for(int u=0;u<2;u++){
+            for(int i=0;i<4;i++){
+                step = 0;
+                nextr = rMove + d[u][i];
+                nextc = cMove+ d[u][i+1];
+                while(nextr>=0 && nextc>=0 && nextr<8 && nextc<8 && board[nextr][nextc]^'.'){
+                    if(board[nextr][nextc]^color)step=1;
+                    else{
+                        if(step)return true;
+                        break;
+                    }
+                    nextr += d[u][i];
+                    nextc += d[u][i+1];
+                }
+            }
+        }
+        return false;
+    }
+};
