@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int findLength(vector<int>& nums1, vector<int>& nums2) {
+        int n = nums1.size();
+        int m = nums2.size();
+        int ret = 0;
+        vector<vector<int>> dp(n, vector<int>(m, 0));
+        for(int i=0;i<n;i++){
+            for(int u=0;u<m;u++){
+                dp[i][u] = (nums1[i]==nums2[u])?((i>0&&u>0)?dp[i-1][u-1]+1:1):0;
+                ret = max(ret, dp[i][u]);
+            }
+        }
+        return ret;
+    }
+};
