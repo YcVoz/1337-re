@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int maxSatisfied(vector<int>& customers, vector<int>& grumpy, int minutes) {
+        int n = customers.size();
+        int lose_c = 0;
+        int total = 0;
+        int max_lose_c = 0;
+        for(int i=0;i<n;i++){
+            total += customers[i]*!grumpy[i];
+            lose_c += customers[i]*grumpy[i];
+            if(i>=minutes)lose_c -= customers[i-minutes]*grumpy[i-minutes];
+            max_lose_c = max(max_lose_c, lose_c);
+        }
+        return max_lose_c+total;
+    }
+};
