@@ -1,0 +1,39 @@
+class Solution {
+public:
+    string pattern_g;
+    void h_f(int start_idx, string& ret, vector<bool>& used, bool& fin){
+        if(fin)return;
+        for(int i=1;i<=9;i++){
+            if(!used[i]){
+                if((pattern_g[start_idx-1]=='I' && i>ret[start_idx-1]-'0')||
+                (pattern_g[start_idx-1]=='D' && i<ret[start_idx-1]-'0')){
+                    used[i] = true;
+                    ret[start_idx] = i+'0';
+                    if(start_idx==ret.size()-1){
+                        fin = true;
+                        return;
+                    }
+                    h_f(start_idx+1, ret, used, fin);
+                    used[i] = false;
+                }
+            }
+            if(fin)return;
+        }
+    }
+    string smallestNumber(string pattern) {
+        int n = pattern.size();
+        bool fin = false;
+        string ret = "0000000000";
+        vector<bool> used(10, false);
+        pattern_g = pattern;
+        ret.resize(n+1);
+        for(int start=1;start<10;start++){
+            used[start] = true;
+            ret[0] = '0'+start;
+            h_f(1, ret, used, fin);
+            if(fin)return ret;
+            used[start] = false;
+        }
+        return "?";
+    }
+};
